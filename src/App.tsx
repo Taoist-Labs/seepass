@@ -1,8 +1,9 @@
+import RouterLink from "./router";
 
 function App() {
   return (
     <div className="App">
-      SeePASS
+      <RouterLink />
     </div>
   );
 }

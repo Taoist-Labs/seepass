@@ -11,6 +11,7 @@ export default function RouterLink() {
   return (
     <Router>
       <Routes>
+        <Route path="/" element={<NotFound />} />
         <Route path="/:domain" element={<Profile />} />
         <Route path="/404" element={<NotFound />} />
       </Routes>

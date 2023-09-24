@@ -18,7 +18,7 @@ export default function Profile() {
   useEffect(() => {
     const initContract = async () => {
       const provider = new ethers.JsonRpcProvider(
-        "https://sepolia.publicgoods.network"
+        "https://ethereum-sepolia.blockpi.network/v1/rpc/public"
       );
       const _contract: PublicResolver =
         PublicResolverContract.atSepolia().connect(provider);

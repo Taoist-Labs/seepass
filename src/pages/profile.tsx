@@ -1,4 +1,5 @@
-import { sns } from "@seedao/sns-js";
+import { ethers } from "ethers";
+import sns from "@seedao/sns-js";
 import { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 
@@ -16,7 +17,7 @@ export default function Profile() {
     const parseDomain = async () => {
       domain &&
         sns
-          .resolve(domain)
+          .resolve(ethers.namehash(domain))
           .then((addr) => {
             console.log("addr:", addr);
             setWallet(addr);

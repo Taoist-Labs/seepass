@@ -2,6 +2,9 @@
 
 The SeePASS for the member of SeeDAO.
 
+# Deploy Status
+
+Dev Branch [![Dev branch Netlify Status](https://api.netlify.com/api/v1/badges/539d3c9b-2b7a-4200-8230-b8e1a995b30c/deploy-status)](https://app.netlify.com/sites/dev-seepass/deploys)
 
 # Build
 

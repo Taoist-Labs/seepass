@@ -5,6 +5,7 @@ import DiscordImg from "../assets/images/discordNor.svg";
 import axios from 'axios';
 import {useEffect, useState} from "react";
 import {useParams} from "react-router-dom";
+import { PersonFill } from "react-bootstrap-icons"
 
 const Box = styled.div`
    min-height: 100vh;
@@ -40,10 +41,15 @@ const Avatar = styled.div`
   align-items: center;
   justify-content: center;
   margin-bottom: 40px;
+  background: #f0f3f8;
   img{
     width: 100%;
     height: 100%;
     object-fit: cover;
+  }
+  .iconBox{
+    font-size:200px;
+    color: rgba(0,0,0,0.12);
   }
 `
 
@@ -319,7 +325,15 @@ export default function Home(){
                 <div>
                     <div className="lftTop">
                         <Avatar>
-                            <img src={detail?.avatar} alt=""/>
+
+                            {
+                                !!detail?.avatar &&<img src={detail?.avatar} alt=""/>
+                            }
+                            {
+                                !detail?.avatar &&<PersonFill  className="iconBox"/>
+                            }
+
+
                         </Avatar>
                         <NameBox>
                             <div className="name">{detail?.sns}</div>

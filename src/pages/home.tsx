@@ -335,10 +335,13 @@ export default function Home(){
 
 
                         </Avatar>
-                        <NameBox>
-                            <div className="name">{detail?.sns}</div>
-                            <div className="domain">{detail?.nickname}</div>
-                        </NameBox>
+                        {
+                            (!!detail?.sns || !!detail?.nickname) &&  <NameBox>
+                                <div className="name">{detail?.sns}</div>
+                                <div className="domain">{detail?.nickname}</div>
+                            </NameBox>
+                        }
+
 
 
                     </div>

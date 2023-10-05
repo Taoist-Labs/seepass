@@ -3,7 +3,7 @@ import styled from "styled-components";
 import TwitterImg from "../assets/images/twitterNor.svg";
 import DiscordImg from "../assets/images/discordNor.svg";
 import axios from 'axios';
-import {useEffect} from "react";
+import {useEffect, useState} from "react";
 
 const Box = styled.div`
    min-height: 100vh;
@@ -22,6 +22,12 @@ const LftBox = styled(Col)`
   justify-content: center;
   align-items: center;
   box-shadow: 0 5px 10px rgba(0,0,0,0.1);
+  @media (max-width: 991px) {
+    box-shadow: none;
+  
+  }
+  
+  
 `
 
 const Avatar = styled.div`
@@ -60,12 +66,15 @@ const TagLine = styled.div`
     display: flex;
   align-items: center;
   justify-content: center;
+  flex-wrap: wrap;
+  width: 300px;
   margin:20px -20px 60px 0;
   .tag{
     border-radius: 4px;
     border: 1px solid #e5e5e5;
     padding:3px 10px;
     margin-right: 20px;
+    margin-bottom: 20px;
   }
 `
 
@@ -140,14 +149,15 @@ const SocialBox =styled.div`
   dt{
     font-weight: normal;
   }
+  dd{
+    color: #a16eff;
+    //text-decoration: underline;
+  }
   img{
     width: 30px;
     cursor: pointer;
   }
-  a{
-    color: #a16eff;
-    text-decoration: underline;
-  }
+
 `
 
 const Rht = styled.div`
@@ -218,122 +228,202 @@ const CardBox = styled(Col)`
   }
 `
 
+
+
 export default function Home(){
+
+    const [ detail,setDetail] = useState<any>();
 
     useEffect(() => {
         getDetail()
     }, []);
     const getDetail = async() =>{
-        axios.get('https://test-seepass-api.seedao.tech/seepass/0x82944b68bB92fA11764041AA61204b5fdC85F429')
-            .then(response => {
+        // axios.get('https://test-seepass-api.seedao.tech/seepass/0x82944b68bB92fA11764041AA61204b5fdC85F429')
+        //     .then(response => {
+        //
+        //         const {data} = response;
+        //         console.log(data)
+        //         setDetail(JSON.parse(data))
+        //         console.log(response.data)
+        //     })
+        //     .catch(error => {
+        //         console.error(error);
+        //     });
 
-                console.log(response)
-            })
-            .catch(error => {
-                console.error(error);
-            });
+
+        setDetail({
+            "sns": "alice.seedao",
+            "nickname": "alice",
+            "wallet": "0x1234123412341234",
+            "avatar": "https://place-holder.it/1234",
+            "roles": [
+                "SGN Holder",
+                "S4节点"
+            ],
+            "scr": {
+                "amount": "50000",
+                "contract_addr": "0x12341234"
+            },
+            "level": {
+                "current_lv": "2",
+                "next_lv": "3",
+                "scr_to_next_lv": "50000",
+                "upgrade_percent": "37.5"
+            },
+            "seed": [
+                {
+                    "token_id": "123",
+                    "token_amount": "1",
+                    "contract_addr": "0x12341234",
+                    "contract_type": "erc1155",
+                    "image_uri": "https://dweb.link/ipfs/bafybeihwciazjns5wjehd3464ipqzxn2kzutazj2ovk3bol4oxjvpcl5za/123_2.png",
+                }
+            ],
+            "sbt_tokens": [
+                {
+                    "name": "onbroading",
+                    "token_id": "1",
+                    "token_amount": "1",
+                    "contract_addr": "0x12341234",
+                    "contract_type": "erc1155",
+                    "image_uri": "https://place-holder.it/200"
+                }
+            ],
+            "achievements": [],
+            "social_network_accounts": [
+                {
+                    "network": "twitter",
+                    "identity": "alicetwitter"
+                },
+                {
+                    "network": "discord",
+                    "identity": "alicedc"
+                }
+            ]
+        })
+    }
+
+    const returnIcon = (str:string) =>{
+        let icon;
+        if(str === "twitter"){
+            icon = TwitterImg;
+        }
+        else if(str === "discord"){
+            icon = DiscordImg;
+        }
+        return icon;
     }
     return <Box>
         <RowBox>
             <LftBox md={12} lg={3}>
                 <div>
-                    <Avatar>
-                        <img src="https://avatars.githubusercontent.com/u/7518647?v=4" alt=""/>
-                    </Avatar>
+                    <div className="lftTop">
+                        <Avatar>
+                            <img src={detail?.avatar} alt=""/>
+                        </Avatar>
 
-                    <NameBox>
-                        <span className="name">Frozen</span>
-                        <span className="domain">. seedao</span>
-                    </NameBox>
+                        <NameBox>
+                            <span className="name">{detail?.sns}</span>
+                        </NameBox>
+                    </div>
+                <div>
                     <TagLine>
-                        <div className="tag">S4节点</div>
-                        <div  className="tag">SGN Holder</div>
+                        {
+                            detail?.roles.map((item:string,index:number)=>( <div className="tag" key={`roles_${index}`}>{item}</div>))
+                        }
                     </TagLine>
                     <LevelBox>
                         <TopLine>
                             <div>当前等级</div>
-                            <Num>LeveL2 5000SCR</Num>
+                            <Num>Level{detail?.level?.current_lv} {detail?.scr?.amount}SCR</Num>
                         </TopLine>
-                        <ProgressBox width="20%">
+                        <ProgressBox width={`${detail?.level?.upgrade_percent}%`}>
                             <div className="inner">
-                                <div className="percent" >45.4%</div>
+                                <div className="percent" >{`${detail?.level?.upgrade_percent}%`}</div>
                             </div>
                         </ProgressBox>
                         <TipsBox>
                             <div>距离下一等级还差</div>
-                            <div>10000SCR</div>
+                            <div>{detail?.level?.scr_to_next_lv}SCR</div>
                         </TipsBox>
                     </LevelBox>
-                        <SocialBox>
-                            <dl>
-                                <dt>
-                                    <img src={TwitterImg} alt=""/>
-                                    <span>twitter</span>
-                                </dt>
-                                <dd>
-                                    <a href="#">@twitter</a></dd>
-                            </dl>
-                            <dl>
-                                <dt>
-                                    <img src={DiscordImg} alt=""/>
-                                    <span>discord</span>
-                                </dt>
-
-                                <dd>
-                                    <a href="#">discord</a></dd>
-                            </dl>
+                    <SocialBox>
+                        {
+                            detail?.social_network_accounts.map((item:any,index:number)=>( <dl key={`roles_${index}`}>
+                            <dt>
+                                <img src={returnIcon(item.network)} alt=""/>
+                                <span>{item.network}</span>
+                            </dt>
+                            <dd>
+                                {item.identity}
+                            </dd>
+                            </dl>))
+                        }
 
 
-                        </SocialBox>
+                    </SocialBox>
+                </div>
+
                 </div>
             </LftBox>
             <Col md={12} lg={9}>
                 <Rht>
-                    <TitRhtBox>
-                        <div className="tit">SEED</div>
-                        <div className="tips">Seed NFT serves as a citizenship proof within the SeeDAO network polis and is a prerequisite to obtain governance rights.
-                            Every Seed NFT is an unique seed, capturing your personal imprint on our shared SeeDAO journey.</div>
-                    </TitRhtBox>
-                    <ListBox>
-                        {
-                            [...Array(10)].map((item,index)=>(
-                                <CardBox md={3}>
-                                    <div className="bgBox">
-                                        <div className="photo">
-                                            <div className="aspect" />
-                                            <div className="content">
-                                                <div className="innerImg">
-                                                    <img src="https://i.seadn.io/gcs/files/58f675ca7ec0fc9d2e6f8d627d2ba7ad.png?w=512&auto=format" alt=""/>
+                    {
+                        !!detail?.seed.length && <>
+                            <TitRhtBox>
+                                <div className="tit">SEED</div>
+                                <div className="tips">Seed NFT serves as a citizenship proof within the SeeDAO network polis and is a prerequisite to obtain governance rights.
+                                    Every Seed NFT is an unique seed, capturing your personal imprint on our shared SeeDAO journey.</div>
+                            </TitRhtBox>
+                            <ListBox>
+                                {
+                                    detail?.seed.map((item:any,index:number)=>(
+                                        <CardBox md={3} key={`seed_${index}`}>
+                                            <div className="bgBox">
+                                                <div className="photo">
+                                                    <div className="aspect" />
+                                                    <div className="content">
+                                                        <div className="innerImg">
+                                                            <img src={item.image_uri} alt=""/>
+                                                        </div>
+                                                    </div>
                                                 </div>
                                             </div>
-                                        </div>
-                                    </div>
-                                </CardBox>
-                            ))
-                        }
-                    </ListBox>
-                    <TitRhtBox>
-                        <div className="tit">SBT</div>
-                        <div className="tips">According to SIP-55 , the criteria and process for issuing SBT across SeeDAO have been clarified. SBT is divided into four categories: Identity, Education, Event, and Project, which are used for identity verification for City Hall, Incubator, offline bases, Guild, and all project proposals.</div>
-                    </TitRhtBox>
-                    <ListBox>
-                        {
-                            [...Array(10)].map((item,index)=>(
-                                <CardBox md={3}>
-                                    <div className="bgBox">
-                                        <div className="photo">
-                                            <div className="aspect" />
-                                            <div className="content">
-                                                <div className="innerImg">
-                                                    <img src="https://i.seadn.io/gcs/files/58f675ca7ec0fc9d2e6f8d627d2ba7ad.png?w=512&auto=format" alt=""/>
+                                        </CardBox>
+                                    ))
+                                }
+                            </ListBox>
+                        </>
+                    }
+
+                    {
+                        !!detail?.sbt_tokens.length && <>
+                            <TitRhtBox>
+                                <div className="tit">SBT</div>
+                                <div className="tips">According to SIP-55 , the criteria and process for issuing SBT across SeeDAO have been clarified. SBT is divided into four categories: Identity, Education, Event, and Project, which are used for identity verification for City Hall, Incubator, offline bases, Guild, and all project proposals.</div>
+                            </TitRhtBox>
+                            <ListBox>
+                                {
+                                    detail?.sbt_tokens.map((item:any,index:number)=>(
+                                        <CardBox md={3} key={`sbt_${index}`}>
+                                            <div className="bgBox">
+                                                <div className="photo">
+                                                    <div className="aspect" />
+                                                    <div className="content">
+                                                        <div className="innerImg">
+                                                            <img src={item.image_uri} alt=""/>
+                                                        </div>
+                                                    </div>
                                                 </div>
                                             </div>
-                                        </div>
-                                    </div>
-                                </CardBox>
-                            ))
-                        }
-                    </ListBox>
+                                        </CardBox>
+                                    ))
+                                }
+                            </ListBox>
+                        </>
+                    }
+
+
                 </Rht>
 
             </Col>

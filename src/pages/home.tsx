@@ -4,6 +4,7 @@ import TwitterImg from "../assets/images/twitterNor.svg";
 import DiscordImg from "../assets/images/discordNor.svg";
 import axios from 'axios';
 import {useEffect, useState} from "react";
+import {useParams} from "react-router-dom";
 
 const Box = styled.div`
    min-height: 100vh;
@@ -233,74 +234,73 @@ const CardBox = styled(Col)`
 export default function Home(){
 
     const [ detail,setDetail] = useState<any>();
+    const {id} = useParams();
+    console.log(id)
 
     useEffect(() => {
         getDetail()
     }, []);
     const getDetail = async() =>{
-        // axios.get('https://test-seepass-api.seedao.tech/seepass/0x82944b68bB92fA11764041AA61204b5fdC85F429')
-        //     .then(response => {
-        //
-        //         const {data} = response;
-        //         console.log(data)
-        //         setDetail(JSON.parse(data))
-        //         console.log(response.data)
-        //     })
-        //     .catch(error => {
-        //         console.error(error);
-        //     });
+        axios.get(`https://test-seepass-api.seedao.tech/seepass/${id}`)
+            .then(response => {
+                const {data} = response;
+                setDetail(data)
+            })
+            .catch(error => {
+                console.error(error);
+            });
 
 
-        setDetail({
-            "sns": "alice.seedao",
-            "nickname": "alice",
-            "wallet": "0x1234123412341234",
-            "avatar": "https://place-holder.it/1234",
-            "roles": [
-                "SGN Holder",
-                "S4节点"
-            ],
-            "scr": {
-                "amount": "50000",
-                "contract_addr": "0x12341234"
-            },
-            "level": {
-                "current_lv": "2",
-                "next_lv": "3",
-                "scr_to_next_lv": "50000",
-                "upgrade_percent": "37.5"
-            },
-            "seed": [
-                {
-                    "token_id": "123",
-                    "token_amount": "1",
-                    "contract_addr": "0x12341234",
-                    "contract_type": "erc1155",
-                    "image_uri": "https://dweb.link/ipfs/bafybeihwciazjns5wjehd3464ipqzxn2kzutazj2ovk3bol4oxjvpcl5za/123_2.png",
-                }
-            ],
-            "sbt_tokens": [
-                {
-                    "name": "onbroading",
-                    "token_id": "1",
-                    "token_amount": "1",
-                    "contract_addr": "0x12341234",
-                    "contract_type": "erc1155",
-                    "image_uri": "https://place-holder.it/200"
-                }
-            ],
-            "achievements": [],
-            "social_network_accounts": [
-                {
-                    "network": "twitter",
-                    "identity": "alicetwitter"
-                },
-                {
-                    "network": "discord",
-                    "identity": "alicedc"
-                }
-            ]
-        })
+        // setDetail({
+        //     "sns": "alice.seedao",
+        //     "nickname": "alice",
+        //     "wallet": "0x1234123412341234",
+        //     "avatar": "https://avatars.githubusercontent.com/u/7518647?v=4",
+        //     "roles": [
+        //         "SGN Holder",
+        //         "S4节点"
+        //     ],
+        //     "scr": {
+        //         "amount": "50000",
+        //         "contract_addr": "0x12341234"
+        //     },
+        //     "level": {
+        //         "current_lv": "2",
+        //         "next_lv": "3",
+        //         "scr_to_next_lv": "50000",
+        //         "upgrade_percent": "37.5"
+        //     },
+        //     "seed": [
+        //         {
+        //             "token_id": "123",
+        //             "token_amount": "1",
+        //             "contract_addr": "0x12341234",
+        //             "contract_type": "erc1155",
+        //             "image_uri": "https://dweb.link/ipfs/bafybeihwciazjns5wjehd3464ipqzxn2kzutazj2ovk3bol4oxjvpcl5za/123_2.png",
+        //         }
+        //     ],
+        //     "sbt": [
+        //         {
+        //             "name": "onbroading",
+        //             "token_id": "1",
+        //             "token_amount": "1",
+        //             "contract_addr": "0x12341234",
+        //             "contract_type": "erc1155",
+        //             "image_uri": "https://place-holder.it/200"
+        //         }
+        //     ],
+        //     "achievements": [],
+        //     "social_network_accounts": [
+        //         {
+        //             "network": "twitter",
+        //             "identity": "alicetwitter"
+        //         },
+        //         {
+        //             "network": "discord",
+        //             "identity": "alicedc"
+        //         }
+        //     ]
+        // })
     }
 
     const returnIcon = (str:string) =>{
@@ -321,15 +321,17 @@ export default function Home(){
                         <Avatar>
                             <img src={detail?.avatar} alt=""/>
                         </Avatar>
-
                         <NameBox>
-                            <span className="name">{detail?.sns}</span>
+                            <div className="name">{detail?.sns}</div>
+                            <div className="domain">{detail?.nickname}</div>
                         </NameBox>
+
+
                     </div>
                 <div>
                     <TagLine>
                         {
-                            detail?.roles.map((item:string,index:number)=>( <div className="tag" key={`roles_${index}`}>{item}</div>))
+                            detail?.roles?.map((item:string,index:number)=>( <div className="tag" key={`roles_${index}`}>{item}</div>))
                         }
                     </TagLine>
                     <LevelBox>
@@ -349,7 +351,7 @@ export default function Home(){
                     </LevelBox>
                     <SocialBox>
                         {
-                            detail?.social_network_accounts.map((item:any,index:number)=>( <dl key={`roles_${index}`}>
+                            detail?.social_network_accounts?.map((item:any,index:number)=>( <dl key={`roles_${index}`}>
                             <dt>
                                 <img src={returnIcon(item.network)} alt=""/>
                                 <span>{item.network}</span>
@@ -369,7 +371,7 @@ export default function Home(){
             <Col md={12} lg={9}>
                 <Rht>
                     {
-                        !!detail?.seed.length && <>
+                        !!detail?.seed?.length && <>
                             <TitRhtBox>
                                 <div className="tit">SEED</div>
                                 <div className="tips">Seed NFT serves as a citizenship proof within the SeeDAO network polis and is a prerequisite to obtain governance rights.
@@ -377,7 +379,7 @@ export default function Home(){
                             </TitRhtBox>
                             <ListBox>
                                 {
-                                    detail?.seed.map((item:any,index:number)=>(
+                                    detail?.seed?.map((item:any,index:number)=>(
                                         <CardBox md={3} key={`seed_${index}`}>
                                             <div className="bgBox">
                                                 <div className="photo">
@@ -397,14 +399,14 @@ export default function Home(){
                     }
 
                     {
-                        !!detail?.sbt_tokens.length && <>
+                        !!detail?.sbt?.length && <>
                             <TitRhtBox>
                                 <div className="tit">SBT</div>
                                 <div className="tips">According to SIP-55 , the criteria and process for issuing SBT across SeeDAO have been clarified. SBT is divided into four categories: Identity, Education, Event, and Project, which are used for identity verification for City Hall, Incubator, offline bases, Guild, and all project proposals.</div>
                             </TitRhtBox>
                             <ListBox>
                                 {
-                                    detail?.sbt_tokens.map((item:any,index:number)=>(
+                                    detail?.sbt?.map((item:any,index:number)=>(
                                         <CardBox md={3} key={`sbt_${index}`}>
                                             <div className="bgBox">
                                                 <div className="photo">

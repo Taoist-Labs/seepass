@@ -13,7 +13,7 @@ export default function RouterLink() {
     <Router>
       <Routes>
         <Route path="/" element={<Home />} />
-        <Route path="/home" element={<Home />} />
+        <Route path="/seepass/:id" element={<Home />} />
         <Route path="/:domain" element={<Profile />} />
         <Route path="/404" element={<NotFound />} />
       </Routes>

@@ -4,14 +4,14 @@ import TwitterImg from "../assets/images/twitterNor.svg";
 import DiscordImg from "../assets/images/discordNor.svg";
 import axios from 'axios';
 import {useEffect, useState} from "react";
-import {useParams} from "react-router-dom";
+import {useNavigate, useParams} from "react-router-dom";
 import { PersonFill } from "react-bootstrap-icons"
+import Loading from "./loading";
 
 const Box = styled.div`
    min-height: 100vh;
-
   display: flex;
-  width: 100%;
+  justify-content: center;
   align-items: stretch;
 `
 const RowBox = styled(Row)`
@@ -26,7 +26,6 @@ const LftBox = styled(Col)`
   box-shadow: 0 5px 10px rgba(0,0,0,0.1);
   @media (max-width: 991px) {
     box-shadow: none;
-  
   }
   
   
@@ -35,12 +34,12 @@ const LftBox = styled(Col)`
 const Avatar = styled.div`
     border-radius: 20px;
   overflow: hidden;
-  width: 300px;
-  height: 300px;
+  width: 15vw;
+  height:15vw;
+  margin: 0 auto 40px;
   display: flex;
   align-items: center;
   justify-content: center;
-  margin-bottom: 40px;
   background: #f0f3f8;
   img{
     width: 100%;
@@ -50,6 +49,11 @@ const Avatar = styled.div`
   .iconBox{
     font-size:200px;
     color: rgba(0,0,0,0.12);
+  }
+  @media (max-width: 991px) {
+    width: 200px;
+    height:200px;
+    margin-top: 60px;
   }
 `
 
@@ -74,7 +78,7 @@ const TagLine = styled.div`
   align-items: center;
   justify-content: center;
   flex-wrap: wrap;
-  width: 300px;
+  width: 15vw;
   margin:20px -20px 60px 0;
   .tag{
     border-radius: 4px;
@@ -82,6 +86,11 @@ const TagLine = styled.div`
     padding:3px 10px;
     margin-right: 20px;
     margin-bottom: 20px;
+    white-space: nowrap;
+    font-size: 12px;
+  }
+  @media (max-width: 991px) {
+    width: 100%;
   }
 `
 
@@ -89,6 +98,9 @@ const LevelBox = styled.div`
     display: flex;
   align-items: center;
   flex-direction: column;
+  @media (max-width: 991px) {
+    margin: 0 auto;
+  }
 `
 interface Props{
     width:string;
@@ -173,6 +185,10 @@ const Rht = styled.div`
   overflow-y: auto;
   display: flex;
   flex-direction: column;
+  @media (max-width: 991px) {
+    margin: 0;
+  }
+  
 `
 
 
@@ -241,72 +257,32 @@ export default function Home(){
 
     const [ detail,setDetail] = useState<any>();
     const {id} = useParams();
-    console.log(id)
+    const navigate = useNavigate();
+    const [show,setShow] = useState(false);
 
     useEffect(() => {
-        getDetail()
-    }, []);
+        console.log(id)
+        if(!id){
+            navigate("/404");
+        }else{
+            getDetail()
+        }
+
+    }, [id]);
     const getDetail = async() =>{
+        setShow(true);
         axios.get(`https://test-seepass-api.seedao.tech/seepass/${id}`)
             .then(response => {
                 const {data} = response;
                 setDetail(data)
+
             })
             .catch(error => {
                 console.error(error);
-            });
-
-
-        // setDetail({
-        //     "sns": "alice.seedao",
-        //     "nickname": "alice",
-        //     "wallet": "0x1234123412341234",
-        //     "avatar": "https://avatars.githubusercontent.com/u/7518647?v=4",
-        //     "roles": [
-        //         "SGN Holder",
-        //         "S4节点"
-        //     ],
-        //     "scr": {
-        //         "amount": "50000",
-        //         "contract_addr": "0x12341234"
-        //     },
-        //     "level": {
-        //         "current_lv": "2",
-        //         "next_lv": "3",
-        //         "scr_to_next_lv": "50000",
-        //         "upgrade_percent": "37.5"
-        //     },
-        //     "seed": [
-        //         {
-        //             "token_id": "123",
-        //             "token_amount": "1",
-        //             "contract_addr": "0x12341234",
-        //             "contract_type": "erc1155",
-        //             "image_uri": "https://dweb.link/ipfs/bafybeihwciazjns5wjehd3464ipqzxn2kzutazj2ovk3bol4oxjvpcl5za/123_2.png",
-        //         }
-        //     ],
-        //     "sbt": [
-        //         {
-        //             "name": "onbroading",
-        //             "token_id": "1",
-        //             "token_amount": "1",
-        //             "contract_addr": "0x12341234",
-        //             "contract_type": "erc1155",
-        //             "image_uri": "https://place-holder.it/200"
-        //         }
-        //     ],
-        //     "achievements": [],
-        //     "social_network_accounts": [
-        //         {
-        //             "network": "twitter",
-        //             "identity": "alicetwitter"
-        //         },
-        //         {
-        //             "network": "discord",
-        //             "identity": "alicedc"
-        //         }
-        //     ]
-        // })
+                navigate("/404")
+            }).finally(()=>{
+            setShow(false);
+        });
     }
 
     const returnIcon = (str:string) =>{
@@ -319,7 +295,11 @@ export default function Home(){
         }
         return icon;
     }
-    return <Box>
+    return <>
+        {
+            show && <Loading />
+        }
+        <Box>
         <RowBox>
             <LftBox md={12} lg={3}>
                 <div>
@@ -341,8 +321,6 @@ export default function Home(){
                                 <div className="domain">{detail?.nickname}</div>
                             </NameBox>
                         }
-
-
 
                     </div>
                 <div>
@@ -448,4 +426,5 @@ export default function Home(){
             </Col>
         </RowBox>
     </Box>
+    </>
 }

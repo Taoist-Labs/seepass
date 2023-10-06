@@ -1,12 +1,14 @@
 import {Row,Col} from "react-bootstrap";
 import styled from "styled-components";
-import TwitterImg from "../assets/images/twitterNor.svg";
-import DiscordImg from "../assets/images/discordNor.svg";
+// import TwitterImg from "../assets/images/twitterNor.svg";
+// import DiscordImg from "../assets/images/discordNor.svg";
 import axios from 'axios';
 import {useEffect, useState} from "react";
 import {useNavigate, useParams} from "react-router-dom";
 import { PersonFill } from "react-bootstrap-icons"
 import Loading from "./loading";
+import {Twitter, Wechat ,Google,Discord} from "react-bootstrap-icons";
+import MirrorImg from "./mirror.png";
 
 const Box = styled.div`
    min-height: 100vh;
@@ -164,16 +166,22 @@ const SocialBox =styled.div`
     justify-content: space-between;
     width: 100%;
     font-size: 14px;
+    border-bottom: 1px solid #eee;
   }
   dt{
     font-weight: normal;
   }
   dd{
-    color: #a16eff;
-    //text-decoration: underline;
+    padding-top: 10px;
+    
+  }
+  .iconLft{
+    color: #007aff;
+    font-size: 20px;
+    margin-right: 10px;
   }
   img{
-    width: 30px;
+    width:20px;
     cursor: pointer;
   }
 
@@ -286,14 +294,27 @@ export default function Home(){
     }
 
     const returnIcon = (str:string) =>{
-        let icon;
-        if(str === "twitter"){
-            icon = TwitterImg;
+        switch (str){
+            case "twitter":
+                return <Twitter />;
+            case "wechat":
+                return <Wechat />;
+            case "google":
+                return <Google />;
+            case "discord":
+                return <Discord />;
+            case "mirror":
+                return <img src={MirrorImg} alt=""/>;
+
         }
-        else if(str === "discord"){
-            icon = DiscordImg;
-        }
-        return icon;
+        // let icon;
+        // if(str === "twitter"){
+        //     icon = TwitterImg;
+        // }
+        // else if(str === "discord"){
+        //     icon = DiscordImg;
+        // }
+        // return icon;
     }
     return <>
         {
@@ -346,9 +367,10 @@ export default function Home(){
                     </LevelBox>
                     <SocialBox>
                         {
-                            detail?.social_network_accounts?.map((item:any,index:number)=>( <dl key={`roles_${index}`}>
+                            detail?.social_accounts?.map((item:any,index:number)=>( <dl key={`roles_${index}`}>
                             <dt>
-                                <img src={returnIcon(item.network)} alt=""/>
+                                {/*<img src={returnIcon(item.network)} alt=""/>*/}
+                                <span className="iconLft">{returnIcon(item.network)}</span>
                                 <span>{item.network}</span>
                             </dt>
                             <dd>

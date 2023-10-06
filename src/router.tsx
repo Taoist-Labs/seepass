@@ -3,7 +3,7 @@ import {
   Route,
   Routes,
 } from "react-router-dom";
-import Profile from "./pages/profile";
+// import Profile from "./pages/profile";
 import NotFound from "./pages/404";
 import Home from "./pages/home";
 
@@ -13,8 +13,8 @@ export default function RouterLink() {
     <Router>
       <Routes>
         <Route path="/" element={<Home />} />
-        <Route path="/seepass/:id" element={<Home />} />
-        <Route path="/:domain" element={<Profile />} />
+        <Route path="/:id" element={<Home />} />
+        {/*<Route path="/:domain" element={<Profile />} />*/}
         <Route path="/404" element={<NotFound />} />
       </Routes>
     </Router>

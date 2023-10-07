@@ -305,6 +305,8 @@ export default function Home(){
         console.log(id)
         if(!id){
             navigate("/404");
+        }else if(id.indexOf(".seedao") === -1){
+            navigate("/404");
         }else{
             getDetail()
         }

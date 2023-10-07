@@ -9,6 +9,8 @@ import { PersonFill } from "react-bootstrap-icons"
 import Loading from "./loading";
 import {Twitter, Wechat ,Google,Discord} from "react-bootstrap-icons";
 import MirrorImg from "./mirror.png";
+import {Form} from "react-bootstrap"
+import { useTranslation } from 'react-i18next';
 
 const Box = styled.div`
    min-height: 100vh;
@@ -26,6 +28,7 @@ const LftBox = styled(Col)`
   justify-content: center;
   align-items: center;
   box-shadow: 0 5px 10px rgba(0,0,0,0.1);
+  position: relative;
   @media (max-width: 991px) {
     box-shadow: none;
   }
@@ -170,15 +173,21 @@ const SocialBox =styled.div`
   }
   dt{
     font-weight: normal;
+    display: flex;
+    align-content: flex-start;
   }
   dd{
     padding-top: 10px;
-    
+    margin-left: 20px;
+    word-break: break-all;
   }
   .iconLft{
     color: #007aff;
     font-size: 20px;
     margin-right: 10px;
+  }
+  .spanTit{
+    margin-top: 5px;
   }
   img{
     width:20px;
@@ -191,8 +200,10 @@ const Rht = styled.div`
     margin: 0 50px;
   height: 100vh;
   overflow-y: auto;
+  
   display: flex;
   flex-direction: column;
+  box-sizing: border-box;
   @media (max-width: 991px) {
     margin: 0;
   }
@@ -205,6 +216,7 @@ const TitRhtBox = styled.div`
   text-align: center;
   padding-top: 40px;
   margin-bottom: 20px;
+  box-sizing: border-box;
   .tit{
     font-family: 'Jost-Bold';
     font-size: 24px;
@@ -220,7 +232,8 @@ const TitRhtBox = styled.div`
 `
 
 const ListBox = styled(Row)`
-    margin-top: 30px;
+    margin: 30px 0 0;
+  padding: 0;
 `
 
 const CardBox = styled(Col)`
@@ -258,15 +271,35 @@ const CardBox = styled(Col)`
     }
   }
 `
-
+const LanBox = styled.div`
+    position: absolute;
+  right: 20px;
+  top:30px;
+  select{
+    border: 0;
+  }
+`
 
 
 export default function Home(){
-
+    const { i18n,t } = useTranslation();
     const [ detail,setDetail] = useState<any>();
     const {id} = useParams();
     const navigate = useNavigate();
     const [show,setShow] = useState(false);
+    const [lan, setLan] = useState('en');
+
+    const getLanguages = () => [
+        {
+            value: 'en',
+            label: 'English',
+        },
+        {
+            value: 'zh',
+            label: '中文',
+        },
+    ];
+
 
     useEffect(() => {
         console.log(id)
@@ -277,6 +310,19 @@ export default function Home(){
         }
 
     }, [id]);
+
+
+    useEffect(() => {
+        const myLan = localStorage.getItem('language');
+        if (!myLan) {
+            const lanInit = getLanguages()[0];
+            localStorage.setItem('language', lanInit.value);
+            changeLang(lanInit.value);
+        } else {
+            changeLang(myLan);
+        }
+
+    }, []);
     const getDetail = async() =>{
         setShow(true);
         axios.get(`https://test-seepass-api.seedao.tech/seepass/${id}`)
@@ -307,15 +353,13 @@ export default function Home(){
                 return <img src={MirrorImg} alt=""/>;
 
         }
-        // let icon;
-        // if(str === "twitter"){
-        //     icon = TwitterImg;
-        // }
-        // else if(str === "discord"){
-        //     icon = DiscordImg;
-        // }
-        // return icon;
     }
+
+    const changeLang = (v: string) => {
+        setLan(v);
+        localStorage.setItem('language', v);
+        i18n.changeLanguage(v);
+    };
     return <>
         {
             show && <Loading />
@@ -323,6 +367,15 @@ export default function Home(){
         <Box>
         <RowBox>
             <LftBox md={12} lg={3}>
+                <LanBox>
+                    <Form.Select size="sm" value={getLanguages().find((item) => item.value === lan)?.value || getLanguages()[0].value} onChange={(event: any) => changeLang(event.target.value)}>
+                        {
+                            getLanguages().map((item,index)=><option value={item.value} key={index} >{item.label}</option>)
+                        }
+
+                    </Form.Select>
+                </LanBox>
+
                 <div>
                     <div className="lftTop">
                         <Avatar>
@@ -352,8 +405,8 @@ export default function Home(){
                     </TagLine>
                     <LevelBox>
                         <TopLine>
-                            <div>当前等级</div>
-                            <Num>Level{detail?.level?.current_lv} {detail?.scr?.amount}SCR</Num>
+                            <div>{t('current')}</div>
+                            <Num>{t('level')}{detail?.level?.current_lv} {detail?.scr?.amount}SCR</Num>
                         </TopLine>
                         <ProgressBox width={`${detail?.level?.upgrade_percent}%`}>
                             <div className="inner">
@@ -361,7 +414,7 @@ export default function Home(){
                             </div>
                         </ProgressBox>
                         <TipsBox>
-                            <div>距离下一等级还差</div>
+                            <div>{t('nextLevel')}</div>
                             <div>{detail?.level?.scr_to_next_lv}SCR</div>
                         </TipsBox>
                     </LevelBox>
@@ -371,7 +424,7 @@ export default function Home(){
                             <dt>
                                 {/*<img src={returnIcon(item.network)} alt=""/>*/}
                                 <span className="iconLft">{returnIcon(item.network)}</span>
-                                <span>{item.network}</span>
+                                <span className="spanTit">{item.network}</span>
                             </dt>
                             <dd>
                                 {item.identity}
@@ -391,8 +444,7 @@ export default function Home(){
                         !!detail?.seed?.length && <>
                             <TitRhtBox>
                                 <div className="tit">SEED</div>
-                                <div className="tips">Seed NFT serves as a citizenship proof within the SeeDAO network polis and is a prerequisite to obtain governance rights.
-                                    Every Seed NFT is an unique seed, capturing your personal imprint on our shared SeeDAO journey.</div>
+                                <div className="tips">{t('seedTips')}</div>
                             </TitRhtBox>
                             <ListBox>
                                 {
@@ -419,7 +471,7 @@ export default function Home(){
                         !!detail?.sbt?.length && <>
                             <TitRhtBox>
                                 <div className="tit">SBT</div>
-                                <div className="tips">According to SIP-55 , the criteria and process for issuing SBT across SeeDAO have been clarified. SBT is divided into four categories: Identity, Education, Event, and Project, which are used for identity verification for City Hall, Incubator, offline bases, Guild, and all project proposals.</div>
+                                <div className="tips">{t('SBTTips')}</div>
                             </TitRhtBox>
                             <ListBox>
                                 {

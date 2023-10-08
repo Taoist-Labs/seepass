@@ -84,7 +84,7 @@ const TagLine = styled.div`
   justify-content: center;
   flex-wrap: wrap;
   width: 15vw;
-  margin:20px -20px 60px 0;
+  margin:20px -20px 10px 0;
   .tag{
     border-radius: 4px;
     border: 1px solid #e5e5e5;
@@ -280,6 +280,18 @@ const LanBox = styled.div`
   }
 `
 
+const Bio = styled.div`
+    margin-bottom: 60px;
+  font-size: 12px;
+  padding: 20px;
+  background: #f5f5f5;
+  border-radius: 10px;
+  width: 15vw;
+  @media (max-width: 991px) {
+    width: 100%;
+  }
+`
+
 
 export default function Home(){
     const { i18n,t } = useTranslation();
@@ -302,7 +314,6 @@ export default function Home(){
 
 
     useEffect(() => {
-        console.log(id)
         if(!id){
             navigate("/404");
         }else if(id.indexOf(".seedao") === -1){
@@ -362,6 +373,78 @@ export default function Home(){
         localStorage.setItem('language', v);
         i18n.changeLanguage(v);
     };
+
+
+    const switchRoles = (role:string) =>{
+        let str:string = "";
+        switch (role){
+            case "SGN_HOLDER":
+                str = t("roles.SGN_HOLDER");
+                break;
+            case "NODE_S1":
+                str = t("roles.NODE_S1");
+                break;
+            case "NODE_S2":
+                str = t("roles.NODE_S2");
+                break;
+            case "NODE_S3":
+                str = t("roles.NODE_S3");
+                break;
+            case "NODE_S4":
+                str = t("roles.NODE_S4");
+                break;
+            case "CITYHALL_S1":
+                str = t("roles.CITYHALL_S1");
+                break;
+            case "CITYHALL_S2":
+                str = t("roles.CITYHALL_S2");
+                break;
+            case "CITYHALL_S3":
+                str = t("roles.CITYHALL_S3");
+                break;
+            case "CITYHALL_S4":
+                str = t("roles.CITYHALL_S4");
+                break;
+            case "CONTRIBUTOR_L1":
+                str = t("roles.CONTRIBUTOR_L1");
+                break;
+            case "CONTRIBUTOR_L2":
+                str = t("roles.CONTRIBUTOR_L2");
+                break;
+            case "CONTRIBUTOR_L3":
+                str = t("roles.CONTRIBUTOR_L3");
+                break;
+            case "CONTRIBUTOR_L4":
+                str = t("roles.CONTRIBUTOR_L4");
+                break;
+            case "CONTRIBUTOR_L5":
+                str = t("roles.CONTRIBUTOR_L5");
+                break;
+            case "CONTRIBUTOR_L6":
+                str = t("roles.CONTRIBUTOR_L6");
+                break;
+            case "CONTRIBUTOR_L7":
+                str = t("roles.CONTRIBUTOR_L7");
+                break;
+            case "CONTRIBUTOR_L8":
+                str = t("roles.CONTRIBUTOR_L8");
+                break;
+            case "CONTRIBUTOR_L9":
+                str = t("roles.CONTRIBUTOR_L9");
+                break;
+            case "SEEDAO_MEMBER":
+                str = t("roles.SEEDAO_MEMBER");
+                break;
+            case "SEEDAO_ONBOARDING":
+                str = t("roles.SEEDAO_ONBOARDING");
+                break;
+            default:
+                str = role;
+                break;
+        }
+        return str;
+    }
+
     return <>
         {
             show && <Loading />
@@ -402,9 +485,15 @@ export default function Home(){
                 <div>
                     <TagLine>
                         {
-                            detail?.roles?.map((item:string,index:number)=>( <div className="tag" key={`roles_${index}`}>{item}</div>))
+                            detail?.roles?.map((item:string,index:number)=>( <div className="tag" key={`roles_${index}`}>{switchRoles(item)}</div>))
                         }
                     </TagLine>
+                    {
+                        !!detail?.bio &&<Bio>
+                            {detail?.bio}
+                        </Bio>
+                    }
+
                     <LevelBox>
                         <TopLine>
                             <div>{t('current')}</div>
@@ -433,8 +522,6 @@ export default function Home(){
                             </dd>
                             </dl>))
                         }
-
-
                     </SocialBox>
                 </div>
 

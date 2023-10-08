@@ -3,5 +3,30 @@
   "level": "Level",
   "nextLevel": "Next Level",
   "seedTips": "Seed NFT serves as a citizenship proof within the SeeDAO network polis and is a prerequisite to obtain governance rights. Every Seed NFT is an unique seed, capturing your personal imprint on our shared SeeDAO journey.",
-  "SBTTips": "According to SIP-55 , the criteria and process for issuing SBT across SeeDAO have been clarified. SBT is divided into four categories: Identity, Education, Event, and Project, which are used for identity verification for City Hall, Incubator, offline bases, Guild, and all project proposals."
+  "SBTTips": "According to SIP-55 , the criteria and process for issuing SBT across SeeDAO have been clarified. SBT is divided into four categories: Identity, Education, Event, and Project, which are used for identity verification for City Hall, Incubator, offline bases, Guild, and all project proposals.",
+  "roles": {
+    "SGN_HOLDER": "SGN Holder",
+    "NODE_S1": "SeeDAO Node S1",
+    "NODE_S2": "SeeDAO Node S2",
+    "NODE_S3": "SeeDAO Node S3",
+    "NODE_S4": "SeeDAO Node S4",
+
+    "CITYHALL_S1": "Cityhall S1",
+    "CITYHALL_S2": "Cityhall S2",
+    "CITYHALL_S3": "Cityhall S3",
+    "CITYHALL_S4": "Cityhall S4",
+
+    "CONTRIBUTOR_L1": "L1 Contributor",
+    "CONTRIBUTOR_L2": "L2 Contributor",
+    "CONTRIBUTOR_L3": "L3 Contributor",
+    "CONTRIBUTOR_L4": "L4 Contributor",
+    "CONTRIBUTOR_L5": "L5 Contributor",
+    "CONTRIBUTOR_L6": "L6 Contributor",
+    "CONTRIBUTOR_L7": "L7 Contributor",
+    "CONTRIBUTOR_L8": "L8 Contributor",
+    "CONTRIBUTOR_L9": "L9 Contributor",
+
+    "SEEDAO_MEMBER": "SeeDAO Member",
+    "SEEDAO_ONBOARDING": "SeeDAO Onboarding"
+  }
 }

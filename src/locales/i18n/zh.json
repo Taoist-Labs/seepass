@@ -3,5 +3,30 @@
   "level": "等级",
   "nextLevel": "下一等级",
   "seedTips": "Seed NFT, 是SeeDAO数字城邦的公民身份证明，也是获得城邦政治权利的前提。每个Seed NFT都是一颗独一无二的种子。",
-  "SBTTips": "根据 SIP-55 明确了全 SeeDAO SBT 发放的标准及流程， SBT 分为身份、教育、活动与项目四类，用于市政厅、孵化器、线下据点、公会与所有立项之项目的身份证明。"
+  "SBTTips": "根据 SIP-55 明确了全 SeeDAO SBT 发放的标准及流程， SBT 分为身份、教育、活动与项目四类，用于市政厅、孵化器、线下据点、公会与所有立项之项目的身份证明。",
+  "roles": {
+    "SGN_HOLDER": "SGN持有者",
+    "NODE_S1": "节点S1",
+    "NODE_S2": "节点S2",
+    "NODE_S3": "节点S3",
+    "NODE_S4": "节点S4",
+
+    "CITYHALL_S1": "市政厅S1",
+    "CITYHALL_S2": "市政厅S2",
+    "CITYHALL_S3": "市政厅S3",
+    "CITYHALL_S4": "市政厅S4",
+
+    "CONTRIBUTOR_L1": "L1 贡献者",
+    "CONTRIBUTOR_L2": "L2 贡献者",
+    "CONTRIBUTOR_L3": "L3 贡献者",
+    "CONTRIBUTOR_L4": "L4 贡献者",
+    "CONTRIBUTOR_L5": "L5 贡献者",
+    "CONTRIBUTOR_L6": "L6 贡献者",
+    "CONTRIBUTOR_L7": "L7 贡献者",
+    "CONTRIBUTOR_L8": "L8 贡献者",
+    "CONTRIBUTOR_L9": "L9 贡献者",
+
+    "SEEDAO_MEMBER": "SeeDAO 成员",
+    "SEEDAO_ONBOARDING": "SeeDAO Onboarding"
+  }
 }

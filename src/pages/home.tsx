@@ -39,8 +39,8 @@ const LftBox = styled(Col)`
 const Avatar = styled.div`
     border-radius: 20px;
   overflow: hidden;
-  width: 15vw;
-  height:15vw;
+  width: 12vw;
+  height:12vw;
   margin: 0 auto 40px;
   display: flex;
   align-items: center;
@@ -83,7 +83,7 @@ const TagLine = styled.div`
   align-items: center;
   justify-content: center;
   flex-wrap: wrap;
-  width: 15vw;
+  width: 17vw;
   margin:20px -20px 10px 0;
   .tag{
     border-radius: 4px;

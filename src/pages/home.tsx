@@ -555,23 +555,21 @@ export default function Home(){
                             </ListBox>
                         </>
                     }
-
                     {
-                        !!detail?.sbt?.length && <>
+                        detail?.sbt?.map((item:any,index:number)=>(<div key={`sbt_${index}`}>
                             <TitRhtBox>
-                                <div className="tit">SBT</div>
-                                <div className="tips">{t('SBTTips')}</div>
+                                <div className="tit">SBT - {item.group}</div>
                             </TitRhtBox>
                             <ListBox>
                                 {
-                                    detail?.sbt?.map((item:any,index:number)=>(
-                                        <CardBox md={3} key={`sbt_${index}`}>
+                                    item.tokens.map((it:any,ind:number)=>(
+                                        <CardBox md={3} key={`sbt_${item.grou}_${ind}`}>
                                             <div className="bgBox">
                                                 <div className="photo">
                                                     <div className="aspect" />
                                                     <div className="content">
                                                         <div className="innerImg">
-                                                            <img src={item.image_uri} alt=""/>
+                                                            <img src={it.image_uri} alt=""/>
                                                         </div>
                                                     </div>
                                                 </div>
@@ -580,7 +578,7 @@ export default function Home(){
                                     ))
                                 }
                             </ListBox>
-                        </>
+                        </div>))
                     }
 
 

@@ -558,12 +558,12 @@ export default function Home(){
                     {
                         detail?.sbt?.map((item:any,index:number)=>(<div key={`sbt_${index}`}>
                             <TitRhtBox>
-                                <div className="tit">SBT - {item.group}</div>
+                                <div className="tit">SBT - {item.group==="_others"? t("others"):item.group}</div>
                             </TitRhtBox>
                             <ListBox>
                                 {
                                     item.tokens.map((it:any,ind:number)=>(
-                                        <CardBox md={3} key={`sbt_${item.grou}_${ind}`}>
+                                        <CardBox md={3} key={`sbt_${item.group}_${ind}`}>
                                             <div className="bgBox">
                                                 <div className="photo">
                                                     <div className="aspect" />

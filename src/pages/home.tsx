@@ -538,7 +538,7 @@ export default function Home(){
                             <ListBox>
                                 {
                                     detail?.seed?.map((item:any,index:number)=>(
-                                        <CardBox md={3} key={`seed_${index}`}>
+                                        <CardBox md={2} key={`seed_${index}`}>
                                             <div className="bgBox">
                                                 <div className="photo">
                                                     <div className="aspect" />
@@ -563,7 +563,7 @@ export default function Home(){
                             <ListBox>
                                 {
                                     item.tokens.map((it:any,ind:number)=>(
-                                        <CardBox md={3} key={`sbt_${item.group}_${ind}`}>
+                                        <CardBox md={2} key={`sbt_${item.group}_${ind}`}>
                                             <div className="bgBox">
                                                 <div className="photo">
                                                     <div className="aspect" />

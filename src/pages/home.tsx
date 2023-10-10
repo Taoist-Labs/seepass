@@ -472,6 +472,13 @@ export default function Home(){
         return str;
     }
 
+    const formatNumber = (amount?: string) => {
+        if (!amount) {
+            return amount;
+        }
+        return Number(amount).toLocaleString("en-US");
+    }
+
     return <>
         {
             show && <Loading />
@@ -525,7 +532,7 @@ export default function Home(){
                         <TopLine>
                             <div>{t('current')}</div>
                             <Num color={getLevelColor(detail?.level?.current_lv)}>
-                                {t('level')}{detail?.level?.current_lv} {detail?.scr?.amount}SCR
+                                {t('level')}{detail?.level?.current_lv} {formatNumber(detail?.scr?.amount)}SCR
                             </Num>
                         </TopLine>
                         <ProgressBox
@@ -537,7 +544,7 @@ export default function Home(){
                         </ProgressBox>
                         <TipsBox>
                             <div>{t('nextLevel')}</div>
-                            <div>{detail?.level?.scr_to_next_lv}SCR</div>
+                            <div>{formatNumber(detail?.level?.scr_to_next_lv)}SCR</div>
                         </TipsBox>
                     </LevelBox>
                     <SocialBox>

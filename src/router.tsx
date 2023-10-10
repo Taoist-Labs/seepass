@@ -6,7 +6,7 @@ import {
 // import Profile from "./pages/profile";
 import NotFound from "./pages/404";
 import Home from "./pages/home";
-
+import Tips from "./pages/tips";
 
 export default function RouterLink() {
   return (
@@ -16,6 +16,7 @@ export default function RouterLink() {
         <Route path="/:id" element={<Home />} />
         {/*<Route path="/:domain" element={<Profile />} />*/}
         <Route path="/404" element={<NotFound />} />
+        <Route path="/tips" element={<Tips />} />
       </Routes>
     </Router>
   );

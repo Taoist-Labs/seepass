@@ -13,7 +13,7 @@ import {Form} from "react-bootstrap"
 import { useTranslation } from 'react-i18next';
 
 const getLevelColor = (level: string) => {
-    switch (level) { 
+    switch (level) {
         case "0":
         case "1":
             return "#FF0000";
@@ -393,12 +393,12 @@ export default function Home(){
             })
             .catch(error => {
                 console.error(error);
-                navigate("/404")
+                navigate("/tips")
             }).finally(()=>{
             setShow(false);
         });
     }
-   
+
     const returnSocial = (str: string, val: string) => {
       switch (str) {
         case "twitter":

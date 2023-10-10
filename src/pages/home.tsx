@@ -1,5 +1,5 @@
 import {Row,Col} from "react-bootstrap";
-import styled from "styled-components";
+import styled, { css } from "styled-components";
 // import TwitterImg from "../assets/images/twitterNor.svg";
 // import DiscordImg from "../assets/images/discordNor.svg";
 import axios from 'axios';
@@ -33,6 +33,15 @@ const getLevelColor = (level: string) => {
             return ""
     }
 }
+const getLevelBorderColor = (level: string) => {
+    switch (level) {
+        case "4":
+        case "5":
+            return "#000";
+        default:
+            return ""
+    }
+};
 
 const Box = styled.div`
    min-height: 100vh;
@@ -132,8 +141,15 @@ const LevelBox = styled.div`
 interface Props{
     width: string;
     color: string;
+    border: string;
 }
 
+const BorderStyle = css`
+    border: 1px solid #000;
+    .percent {
+        color: #000;
+    }
+`
 const ProgressBox = styled.div<Props>`
     width: 100%;
   height: 12px;
@@ -156,6 +172,7 @@ const ProgressBox = styled.div<Props>`
     font-size: 10px;
     color: #eee;
   }
+  ${props => props.border && BorderStyle}
 `
 
 const TipsBox = styled.div`
@@ -174,9 +191,9 @@ const TopLine = styled.div`
   width: 100%;
 `
 
-const Num = styled.div<{ color: string }>`
+const Num = styled.div<{ color: string; border: string }>`
   font-family: "Jost-Bold";
-  color: ${(props) => props.color || "#a16eff"};
+  color: ${(props) => props.border || props.color || "#a16eff"};
 `;
 
 const SocialBox =styled.div`
@@ -491,7 +508,7 @@ export default function Home(){
 
     const formatNumber = (amount?: string) => {
         if (!amount) {
-            return amount;
+            return "0";
         }
         return Number(amount).toLocaleString("en-US");
     }
@@ -548,12 +565,13 @@ export default function Home(){
                     <LevelBox>
                         <TopLine>
                             <div>{t('current')}</div>
-                            <Num color={getLevelColor(detail?.level?.current_lv)}>
+                            <Num color={getLevelColor(detail?.level?.current_lv)} border={getLevelBorderColor(detail?.level?.current_lv)}>
                                 {t('level')}{detail?.level?.current_lv} {formatNumber(detail?.scr?.amount)}SCR
                             </Num>
                         </TopLine>
                         <ProgressBox
                             width={`${detail?.level?.upgrade_percent}%`}
+                            border={getLevelBorderColor(detail?.level?.current_lv)}
                             color={getLevelColor(detail?.level?.current_lv)}>
                             <div className="inner">
                                 <div className="percent" >{`${detail?.level?.upgrade_percent}%`}</div>

@@ -12,6 +12,28 @@ import MirrorImg from "./mirror.png";
 import {Form} from "react-bootstrap"
 import { useTranslation } from 'react-i18next';
 
+const getLevelColor = (level: string) => {
+    switch (level) { 
+        case "0":
+        case "1":
+            return "#FF0000";
+        case "2":
+        case "3":
+            return "#01B492";
+        case "4":
+        case "5":
+            return "#FFFFFF";
+        case "6":
+        case "7":
+            return "#FF0091";
+        case "8":
+        case "9":
+            return "#00B1FF";
+        default:
+            return ""
+    }
+}
+
 const Box = styled.div`
    min-height: 100vh;
   display: flex;
@@ -108,7 +130,8 @@ const LevelBox = styled.div`
   }
 `
 interface Props{
-    width:string;
+    width: string;
+    color: string;
 }
 
 const ProgressBox = styled.div<Props>`
@@ -120,7 +143,7 @@ const ProgressBox = styled.div<Props>`
   overflow: hidden;
   .inner{
     width:${props=>props.width};
-    background: #a16eff;
+    background: ${props=>props.color || "#a16eff"};
     height: 12px;
     position: relative;
   }
@@ -151,10 +174,10 @@ const TopLine = styled.div`
   width: 100%;
 `
 
-const Num  = styled.div`
-  font-family: 'Jost-Bold';
-  color: #a16eff;
-`
+const Num = styled.div<{ color: string }>`
+  font-family: "Jost-Bold";
+  color: ${(props) => props.color || "#a16eff"};
+`;
 
 const SocialBox =styled.div`
   display: flex;
@@ -501,9 +524,13 @@ export default function Home(){
                     <LevelBox>
                         <TopLine>
                             <div>{t('current')}</div>
-                            <Num>{t('level')}{detail?.level?.current_lv} {detail?.scr?.amount}SCR</Num>
+                            <Num color={getLevelColor(detail?.level?.current_lv)}>
+                                {t('level')}{detail?.level?.current_lv} {detail?.scr?.amount}SCR
+                            </Num>
                         </TopLine>
-                        <ProgressBox width={`${detail?.level?.upgrade_percent}%`}>
+                        <ProgressBox
+                            width={`${detail?.level?.upgrade_percent}%`}
+                            color={getLevelColor(detail?.level?.current_lv)}>
                             <div className="inner">
                                 <div className="percent" >{`${detail?.level?.upgrade_percent}%`}</div>
                             </div>

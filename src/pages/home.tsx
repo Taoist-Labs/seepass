@@ -218,6 +218,9 @@ const SocialBox =styled.div`
   }
 
 `
+const SocialLink = styled.a`
+    
+`;
 
 const Rht = styled.div`
     margin: 0 50px;
@@ -378,22 +381,36 @@ export default function Home(){
             setShow(false);
         });
     }
-
-    const returnIcon = (str:string) =>{
-        switch (str){
-            case "twitter":
-                return <Twitter />;
-            case "wechat":
-                return <Wechat />;
-            case "google":
-                return <Google />;
-            case "discord":
-                return <Discord />;
-            case "mirror":
-                return <img src={MirrorImg} alt=""/>;
-
-        }
-    }
+   
+    const returnSocial = (str: string, val: string) => {
+      switch (str) {
+        case "twitter":
+          return [
+            <Twitter />,
+            <SocialLink href={val} target="_blank">
+              {val}
+            </SocialLink>,
+          ];
+        case "wechat":
+          return [<Wechat />, val];
+        case "google":
+          return [
+            <Google />,
+            <SocialLink href={`mailto:${val}`} target="_blank">
+              {val}
+            </SocialLink>,
+          ];
+        case "discord":
+          return [<Discord />, val];
+        case "mirror":
+          return [
+            <img src={MirrorImg} alt="" />,
+            <SocialLink href={val} target="_blank">
+              {val}
+            </SocialLink>,
+          ];
+      }
+    };
 
     const changeLang = (v: string) => {
         setLan(v);
@@ -552,11 +569,11 @@ export default function Home(){
                             detail?.social_accounts?.map((item:any,index:number)=>( <dl key={`roles_${index}`}>
                             <dt>
                                 {/*<img src={returnIcon(item.network)} alt=""/>*/}
-                                <span className="iconLft">{returnIcon(item.network)}</span>
+                                <span className="iconLft">{returnSocial(item.network, item.identity)?.[0]}</span>
                                 <span className="spanTit">{item.network}</span>
                             </dt>
                             <dd>
-                                {item.identity}
+                                {returnSocial(item.network, item.identity)?.[1]}
                             </dd>
                             </dl>))
                         }

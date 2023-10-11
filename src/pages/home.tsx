@@ -574,7 +574,7 @@ export default function Home(){
                             border={getLevelBorderColor(detail?.level?.current_lv)}
                             color={getLevelColor(detail?.level?.current_lv)}>
                             <div className="inner">
-                                <div className="percent" >{`${detail?.level?.upgrade_percent}%`}</div>
+                                <div className="percent" >{`${detail?.level?.upgrade_percent || 0}%`}</div>
                             </div>
                         </ProgressBox>
                         <TipsBox>

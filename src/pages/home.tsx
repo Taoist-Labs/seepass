@@ -334,7 +334,7 @@ const Bio = styled.div`
   padding: 20px;
   background: #f5f5f5;
   border-radius: 10px;
-  width: 15vw;
+  width: 100%;
   @media (max-width: 991px) {
     width: 100%;
   }

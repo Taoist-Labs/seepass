@@ -27,7 +27,8 @@
     "CONTRIBUTOR_L9": "L9 Contributor",
 
     "SEEDAO_MEMBER": "SeeDAO Member",
-    "SEEDAO_ONBOARDING": "SeeDAO Onboarding",
-    "others": "Others"
-  }
+    "SEEDAO_ONBOARDING": "SeeDAO Onboarding"
+  },
+  "email": "email",
+  "others": "Others"
 }

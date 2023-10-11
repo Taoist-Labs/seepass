@@ -11,6 +11,7 @@ import {Twitter, Wechat ,Google,Discord} from "react-bootstrap-icons";
 import MirrorImg from "./mirror.png";
 import {Form} from "react-bootstrap"
 import { useTranslation } from 'react-i18next';
+import EmailIcon from "../assets/images/email.png"
 
 const getLevelColor = (level: string) => {
     switch (level) {
@@ -594,6 +595,19 @@ export default function Home(){
                                 {returnSocial(item.network, item.identity)?.[1]}
                             </dd>
                             </dl>))
+                        }
+                        {
+                          detail?.email && <dl>
+                            <dt>
+                                <span className="iconLft"><img src={EmailIcon} alt="" /></span>
+                                <span className="spanTit">{t("email")}</span>
+                            </dt>
+                            <dd>
+                              <SocialLink href={`mailto:${detail.email}`} target="_blank">
+                                  {detail.email}
+                              </SocialLink>
+                            </dd>
+                            </dl>
                         }
                     </SocialBox>
                 </div>

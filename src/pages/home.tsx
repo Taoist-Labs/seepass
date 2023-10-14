@@ -348,6 +348,7 @@ export default function Home(){
     const navigate = useNavigate();
     const [show,setShow] = useState(false);
     const [lan, setLan] = useState('en');
+    const [sbt, setSbt] = useState<any[]>([]);
 
     const getLanguages = () => [
         {
@@ -390,6 +391,22 @@ export default function Home(){
             .then(response => {
                 const {data} = response;
                 setDetail(data)
+
+                let sbtArr = data.sbt;
+
+
+                const groupedData = sbtArr.reduce((result:any, item:any) => {
+                    const key = item?.metadata?.properties?.category? item?.metadata?.properties?.category:"others";
+                    const group = result?.find((group:any) => group.category === key);
+                    if (group) {
+                        group.tokens.push(item);
+                    } else {
+                        result.push({ category: key, tokens: [item] });
+                    }
+                    return result;
+                }, []);
+                setSbt(groupedData)
+
 
             })
             .catch(error => {
@@ -643,14 +660,14 @@ export default function Home(){
                         </>
                     }
                     {
-                        detail?.sbt?.map((item:any,index:number)=>(<div key={`sbt_${index}`}>
+                        sbt?.map((item:any,index:number)=>(<div key={`sbt_${index}`}>
                             <TitRhtBox>
-                                <div className="tit">SBT - {item.group==="_others"? t("others"):item.group}</div>
+                                <div className="tit">SBT - {item.category}</div>
                             </TitRhtBox>
                             <ListBox>
                                 {
                                     item.tokens.map((it:any,ind:number)=>(
-                                        <CardBox md={2} key={`sbt_${item.group}_${ind}`}>
+                                        <CardBox md={2} key={`sbt_${item.category}_${ind}`}>
                                             <div className="bgBox">
                                                 <div className="photo">
                                                     <div className="aspect" />

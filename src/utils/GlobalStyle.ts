@@ -3,7 +3,7 @@ import "../assets/style/font.css";
 
 const GlobalStyle = createGlobalStyle`
   body,html{
-    background: #fff;
+    background: #FBF5EF;
     color: #000;
     padding: 0;
     margin: 0;

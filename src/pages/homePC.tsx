@@ -86,7 +86,7 @@ const SeedBox = styled.div`
     display: flex;
   align-items: center;
   justify-content: center;
-  margin: 80px 0;
+  margin-top: 80px;
   li{
     width: 280px;
     height: 280px;
@@ -99,7 +99,7 @@ const SeedBox = styled.div`
 const ProgressOuter = styled.div`
   display: flex;
   flex-direction: column;
-  
+  margin-top: 80px;
 `
 
 const FstLine = styled.div`
@@ -390,13 +390,13 @@ export default function HomePC(){
         </Banner>
         <MainBox>
             <Roles roles={detail?.roles} switchRoles={switchRoles}/>
-            <SeedBox>
-                {
-                    [...Array(3)].map((item,index)=>(<li key={`seed_${index}`}>
+            {/*<SeedBox>*/}
+            {/*    {*/}
+            {/*        [...Array(3)].map((item,index)=>(<li key={`seed_${index}`}>*/}
 
-                    </li>))
-                }
-            </SeedBox>
+            {/*        </li>))*/}
+            {/*    }*/}
+            {/*</SeedBox>*/}
             <ProgressOuter>
                 <FstLine>
                     <LevelBox>

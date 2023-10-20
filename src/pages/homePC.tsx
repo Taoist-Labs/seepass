@@ -134,10 +134,10 @@ const ProgressBox = styled.div<ProgressProp>`
   border-radius: 20px;
   overflow: hidden;
   .inner{
-    height: 18px;
+    height: 16px;
     background: #000;
     width: ${props => props.width +"%"};
-    border-radius: 16px;
+    border-radius: 100px;
   }
 `
 const TipsBox = styled.div`

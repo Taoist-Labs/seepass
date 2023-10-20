@@ -1,4 +1,12 @@
 import styled from "styled-components";
+import {useTranslation} from "react-i18next";
+import {useEffect, useState} from "react";
+import {useNavigate, useParams} from "react-router-dom";
+import axios from "axios";
+import RoleMobile from "../components/roleMobile";
+import {Discord, Google, PersonFill, Twitter, Wechat} from "react-bootstrap-icons";
+import MirrorImg from "./mirror.png";
+import Roles from "../components/roleMobile";
 
 
 const BoxOuter = styled.div`
@@ -32,9 +40,16 @@ const AvatarBox = styled.div`
   height: 100px;
   border-radius: 15px;
   overflow: hidden;
+  background: #fff;
+  .iconBox{
+    font-size:100px;
+    color: rgba(0,0,0,0.12);
+  }
   img{
     width: 100%;
     height: 100%;
+    border-radius: 15px;
+    border: 2px solid #fff;
   }
 `
 
@@ -65,32 +80,7 @@ const MainBox = styled.div`
   display: flex;
   flex-direction: column;
 `
-const TagBox = styled.div`
-    background: #fff;
-  border-radius: 30px;
-  padding:30px;
-  margin: 0 30px;
-  position: relative;
-  z-index: 1;
-`
 
-const TagCenter = styled.ul`
-    display: flex;
-  flex-wrap: wrap;
-  width: 100%;
-  li{
-    border-radius: 45px;
-    border:1px solid #000;
-    width: 45%;
-    margin:5px;
-    height: 30px;
-    display: flex;
-    align-items: center;
-    font-size: 12px;
-    justify-content: center;
-  }
-
-`
 
 const ProgressOuter = styled.div`
   display: flex;
@@ -197,43 +187,227 @@ const MidLine = styled.div`
 `
 
 export default function HomeMobile(){
+
+    const { i18n,t } = useTranslation();
+    const [ detail,setDetail] = useState<any>();
+    const {id} = useParams();
+    const navigate = useNavigate();
+    const [show,setShow] = useState(false);
+    const [lan, setLan] = useState('en');
+    const [sbt, setSbt] = useState<any[]>([]);
+
+    const getLanguages = () => [
+        {
+            value: 'en',
+            label: 'English',
+        },
+        {
+            value: 'zh',
+            label: '中文',
+        },
+    ];
+
+
+    useEffect(() => {
+        if(!id){
+            navigate("/404");
+        }else if(id.indexOf(".seedao") === -1){
+            navigate("/404");
+        }else{
+            getDetail()
+        }
+
+    }, [id]);
+
+
+    useEffect(() => {
+        const myLan = localStorage.getItem('language');
+        if (!myLan) {
+            const lanInit = getLanguages()[0];
+            localStorage.setItem('language', lanInit.value);
+            changeLang(lanInit.value);
+        } else {
+            changeLang(myLan);
+        }
+
+    }, []);
+    const getDetail = async() =>{
+        setShow(true);
+        axios.get(`https://test-seepass-api.seedao.tech/seepass/${id}`)
+            .then(response => {
+                const {data} = response;
+                setDetail(data)
+
+                let sbtArr = data.sbt;
+
+
+                const groupedData = sbtArr.reduce((result:any, item:any) => {
+                    const key = item?.metadata?.properties?.category? item?.metadata?.properties?.category:"others";
+                    const group = result?.find((group:any) => group.category === key);
+                    if (group) {
+                        group.tokens.push(item);
+                    } else {
+                        result.push({ category: key, tokens: [item] });
+                    }
+                    return result;
+                }, []);
+                setSbt(groupedData)
+
+
+            })
+            .catch(error => {
+                console.error(error);
+                navigate("/tips")
+            }).finally(()=>{
+            setShow(false);
+        });
+    }
+
+    // const returnSocial = (str: string, val: string) => {
+    //     switch (str) {
+    //         case "twitter":
+    //             return [
+    //                 <Twitter />,
+    //                 <SocialLink href={val} target="_blank">
+    //                     {val}
+    //                 </SocialLink>,
+    //             ];
+    //         case "wechat":
+    //             return [<Wechat />, val];
+    //         case "google":
+    //             return [
+    //                 <Google />,
+    //                 <SocialLink href={`mailto:${val}`} target="_blank">
+    //                     {val}
+    //                 </SocialLink>,
+    //             ];
+    //         case "discord":
+    //             return [<Discord />, val];
+    //         case "mirror":
+    //             return [
+    //                 <img src={MirrorImg} alt="" />,
+    //                 <SocialLink href={val} target="_blank">
+    //                     {val}
+    //                 </SocialLink>,
+    //             ];
+    //     }
+    // };
+
+    const changeLang = (v: string) => {
+        setLan(v);
+        localStorage.setItem('language', v);
+        i18n.changeLanguage(v);
+    };
+
+
+    const switchRoles = (role:string) =>{
+        let str:string = "";
+        switch (role){
+            case "SGN_HOLDER":
+                str = t("roles.SGN_HOLDER");
+                break;
+            case "NODE_S1":
+                str = t("roles.NODE_S1");
+                break;
+            case "NODE_S2":
+                str = t("roles.NODE_S2");
+                break;
+            case "NODE_S3":
+                str = t("roles.NODE_S3");
+                break;
+            case "NODE_S4":
+                str = t("roles.NODE_S4");
+                break;
+            case "CITYHALL_S1":
+                str = t("roles.CITYHALL_S1");
+                break;
+            case "CITYHALL_S2":
+                str = t("roles.CITYHALL_S2");
+                break;
+            case "CITYHALL_S3":
+                str = t("roles.CITYHALL_S3");
+                break;
+            case "CITYHALL_S4":
+                str = t("roles.CITYHALL_S4");
+                break;
+            case "CONTRIBUTOR_L1":
+                str = t("roles.CONTRIBUTOR_L1");
+                break;
+            case "CONTRIBUTOR_L2":
+                str = t("roles.CONTRIBUTOR_L2");
+                break;
+            case "CONTRIBUTOR_L3":
+                str = t("roles.CONTRIBUTOR_L3");
+                break;
+            case "CONTRIBUTOR_L4":
+                str = t("roles.CONTRIBUTOR_L4");
+                break;
+            case "CONTRIBUTOR_L5":
+                str = t("roles.CONTRIBUTOR_L5");
+                break;
+            case "CONTRIBUTOR_L6":
+                str = t("roles.CONTRIBUTOR_L6");
+                break;
+            case "CONTRIBUTOR_L7":
+                str = t("roles.CONTRIBUTOR_L7");
+                break;
+            case "CONTRIBUTOR_L8":
+                str = t("roles.CONTRIBUTOR_L8");
+                break;
+            case "CONTRIBUTOR_L9":
+                str = t("roles.CONTRIBUTOR_L9");
+                break;
+            case "SEEDAO_MEMBER":
+                str = t("roles.SEEDAO_MEMBER");
+                break;
+            case "SEEDAO_ONBOARDING":
+                str = t("roles.SEEDAO_ONBOARDING");
+                break;
+            default:
+                str = role;
+                break;
+        }
+        return str;
+    }
+
+    const formatNumber = (amount?: string) => {
+        if (!amount) {
+            return "0";
+        }
+        return Number(amount).toLocaleString("en-US");
+    }
     return <BoxOuter>
         <BannerBox>
             <InnerBox>
                 <AvatarBox>
-                    <img src="https://bafybeihwciazjns5wjehd3464ipqzxn2kzutazj2ovk3bol4oxjvpcl5za.ipfs.dweb.link/17_3.png" alt=""/>
+                    {
+                        !!detail?.avatar &&<img src={detail?.avatar} alt=""/>
+                    }
+                    {
+                        !detail?.avatar &&<PersonFill  className="iconBox"/>
+                    }
                 </AvatarBox>
-                <TitleBox>baiyu.seedao</TitleBox>
-                <NameBox>baiyu</NameBox>
+                <TitleBox>{detail?.sns}</TitleBox>
+                <NameBox>{detail?.nickname}</NameBox>
                 <DescBox>
-                    Dev Mode is a new space in Figma that makes dev work easier. Inspect mocks, diff design changes, copy code snippets, and work with the tools you use every day.
+                    {detail?.bio}
                 </DescBox>
             </InnerBox>
         </BannerBox>
         <MainBox>
-            <TagBox>
-                <TagCenter>
-                    {
-                        [...Array(8)].map((item,index)=>(<li key={index}>SeeDAO Member</li>
-
-                        ))
-                    }
-
-                </TagCenter>
-
-            </TagBox>
+            <Roles roles={detail?.roles} switchRoles={switchRoles}/>
             <ProgressOuter>
                 <FstLine>
                     <LevelBox>
-                        Level 5
+                        {t('level')}{detail?.level?.current_lv}
                     </LevelBox>
-                    <SCRBox>1,120,72xx SCR</SCRBox>
+                    <SCRBox>{formatNumber(detail?.scr?.amount)} SCR</SCRBox>
                 </FstLine>
-                <ProgressBox width="80">
+                <ProgressBox width={detail?.level?.upgrade_percent}>
                     <div className="inner" />
                 </ProgressBox>
                 <TipsBox>
-                    NEXT LEVEL:172xxx SCR
+                    {t('nextLevel')}:{formatNumber(detail?.level?.scr_to_next_lv)} SCR
                 </TipsBox>
             </ProgressOuter>
             <MidLine>

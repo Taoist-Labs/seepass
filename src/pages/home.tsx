@@ -558,7 +558,6 @@ export default function Home(){
                                 !detail?.avatar &&<PersonFill  className="iconBox"/>
                             }
 
-
                         </Avatar>
                         {
                             (!!detail?.sns || !!detail?.nickname) &&  <NameBox>

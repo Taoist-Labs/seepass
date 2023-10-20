@@ -172,7 +172,7 @@ const Logo = styled.div`
 `
 
 
-export default function Home2(){
+export default function HomePC(){
 
     const { i18n,t } = useTranslation();
     const [ detail,setDetail] = useState<any>();

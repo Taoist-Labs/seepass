@@ -1,5 +1,13 @@
 import styled from "styled-components";
 import BgImg from "../assets/newImages/banner.png";
+import Roles from "../components/roles";
+import SBT from "../components/sbt";
+import {useTranslation} from "react-i18next";
+import {useEffect, useState} from "react";
+import {useNavigate, useParams} from "react-router-dom";
+import axios from "axios";
+import {Discord, Google, PersonFill, Twitter, Wechat} from "react-bootstrap-icons";
+import MirrorImg from "./mirror.png";
 
 const BoxOuter = styled.div`
     display: flex;
@@ -28,9 +36,18 @@ const AvatarBox = styled.div`
   height: 200px;
   border-radius: 15px;
   overflow: hidden;
+  box-sizing: border-box;
+
+  .iconBox{
+    font-size:200px;
+    color: rgba(0,0,0,0.12);
+  }
+  background: #fff;
   img{
     width: 100%;
     height: 100%;
+    border-radius: 15px;
+    border: 3px solid #fff;
   }
 `
 
@@ -61,29 +78,6 @@ const MainBox = styled.div`
   flex-direction: column;
 `
 
-const TagBox = styled.div`
-    background: #fff;
-  border-radius: 30px;
-  padding: 50px 30px;
-`
-
-const TagCenter = styled.ul`
-    display: flex;
-  flex-wrap: wrap;
-  width: 840px;
-  
-  li{
-    border-radius: 45px;
-    border:2px solid #000;
-    width: 200px;
-    margin:5px;
-    height: 40px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-  }
-
-`
 
 const SeedBox = styled.div`
     display: flex;
@@ -151,55 +145,7 @@ const TipsBox = styled.div`
 `
 
 const SbtOuter =styled.div`
-    dl{
-      margin-bottom: 50px;
-    }
-  dt{
-    font-size: 35px;
-    text-align: center;
-    span{
-      color: #B5B6C4;
-    }
-  }
-  dd{
-    margin-top: 30px;
-    background: #000;
-    padding: 20px;
-    border-radius: 30px;
-  }
-  ul{
-    display: flex;
-    align-items: center;
-  }
-  li{
-    background: #fff;
-    border-radius: 20px;
-    padding: 20px;
-    margin-right: 10px;
-    box-sizing: border-box;
-    .imgBox{
-      width: 128px;
-      height: 128px;
-      background: #d9d9d9;   
-      border-radius: 16px;
-      font-size: 15px;
-    }
-    .title{
-      width: 128px;
-      overflow: hidden;
-      text-overflow: ellipsis;
-      display: -webkit-box;
-      -webkit-line-clamp: 2;
-      /*! autoprefixer: off */
-      -webkit-box-orient: vertical;
-      margin-top: 10px;
-    }
-    .num{
-      text-align: center;
-      font-size: 12px;
-      margin-top: 10px;
-    }
-  }
+
 `
 const LastLine = styled.ul`
     display: flex;
@@ -227,31 +173,217 @@ const Logo = styled.div`
 
 
 export default function Home2(){
+
+    const { i18n,t } = useTranslation();
+    const [ detail,setDetail] = useState<any>();
+    const {id} = useParams();
+    const navigate = useNavigate();
+    const [show,setShow] = useState(false);
+    const [lan, setLan] = useState('en');
+    const [sbt, setSbt] = useState<any[]>([]);
+
+    const getLanguages = () => [
+        {
+            value: 'en',
+            label: 'English',
+        },
+        {
+            value: 'zh',
+            label: '中文',
+        },
+    ];
+
+
+    useEffect(() => {
+        if(!id){
+            navigate("/404");
+        }else if(id.indexOf(".seedao") === -1){
+            navigate("/404");
+        }else{
+            getDetail()
+        }
+
+    }, [id]);
+
+
+    useEffect(() => {
+        const myLan = localStorage.getItem('language');
+        if (!myLan) {
+            const lanInit = getLanguages()[0];
+            localStorage.setItem('language', lanInit.value);
+            changeLang(lanInit.value);
+        } else {
+            changeLang(myLan);
+        }
+
+    }, []);
+    const getDetail = async() =>{
+        setShow(true);
+        axios.get(`https://test-seepass-api.seedao.tech/seepass/${id}`)
+            .then(response => {
+                const {data} = response;
+                setDetail(data)
+
+                let sbtArr = data.sbt;
+
+
+                const groupedData = sbtArr.reduce((result:any, item:any) => {
+                    const key = item?.metadata?.properties?.category? item?.metadata?.properties?.category:"others";
+                    const group = result?.find((group:any) => group.category === key);
+                    if (group) {
+                        group.tokens.push(item);
+                    } else {
+                        result.push({ category: key, tokens: [item] });
+                    }
+                    return result;
+                }, []);
+                setSbt(groupedData)
+
+
+            })
+            .catch(error => {
+                console.error(error);
+                navigate("/tips")
+            }).finally(()=>{
+            setShow(false);
+        });
+    }
+
+    const returnSocial = (str: string, val: string) => {
+        // switch (str) {
+        //     case "twitter":
+        //         return [
+        //             <Twitter />,
+        //             <SocialLink href={val} target="_blank">
+        //                 {val}
+        //             </SocialLink>,
+        //         ];
+        //     case "wechat":
+        //         return [<Wechat />, val];
+        //     case "google":
+        //         return [
+        //             <Google />,
+        //             <SocialLink href={`mailto:${val}`} target="_blank">
+        //                 {val}
+        //             </SocialLink>,
+        //         ];
+        //     case "discord":
+        //         return [<Discord />, val];
+        //     case "mirror":
+        //         return [
+        //             <img src={MirrorImg} alt="" />,
+        //             <SocialLink href={val} target="_blank">
+        //                 {val}
+        //             </SocialLink>,
+        //         ];
+        // }
+    };
+
+    const changeLang = (v: string) => {
+        setLan(v);
+        localStorage.setItem('language', v);
+        i18n.changeLanguage(v);
+    };
+
+
+    const switchRoles = (role:string) =>{
+        let str:string = "";
+        switch (role){
+            case "SGN_HOLDER":
+                str = t("roles.SGN_HOLDER");
+                break;
+            case "NODE_S1":
+                str = t("roles.NODE_S1");
+                break;
+            case "NODE_S2":
+                str = t("roles.NODE_S2");
+                break;
+            case "NODE_S3":
+                str = t("roles.NODE_S3");
+                break;
+            case "NODE_S4":
+                str = t("roles.NODE_S4");
+                break;
+            case "CITYHALL_S1":
+                str = t("roles.CITYHALL_S1");
+                break;
+            case "CITYHALL_S2":
+                str = t("roles.CITYHALL_S2");
+                break;
+            case "CITYHALL_S3":
+                str = t("roles.CITYHALL_S3");
+                break;
+            case "CITYHALL_S4":
+                str = t("roles.CITYHALL_S4");
+                break;
+            case "CONTRIBUTOR_L1":
+                str = t("roles.CONTRIBUTOR_L1");
+                break;
+            case "CONTRIBUTOR_L2":
+                str = t("roles.CONTRIBUTOR_L2");
+                break;
+            case "CONTRIBUTOR_L3":
+                str = t("roles.CONTRIBUTOR_L3");
+                break;
+            case "CONTRIBUTOR_L4":
+                str = t("roles.CONTRIBUTOR_L4");
+                break;
+            case "CONTRIBUTOR_L5":
+                str = t("roles.CONTRIBUTOR_L5");
+                break;
+            case "CONTRIBUTOR_L6":
+                str = t("roles.CONTRIBUTOR_L6");
+                break;
+            case "CONTRIBUTOR_L7":
+                str = t("roles.CONTRIBUTOR_L7");
+                break;
+            case "CONTRIBUTOR_L8":
+                str = t("roles.CONTRIBUTOR_L8");
+                break;
+            case "CONTRIBUTOR_L9":
+                str = t("roles.CONTRIBUTOR_L9");
+                break;
+            case "SEEDAO_MEMBER":
+                str = t("roles.SEEDAO_MEMBER");
+                break;
+            case "SEEDAO_ONBOARDING":
+                str = t("roles.SEEDAO_ONBOARDING");
+                break;
+            default:
+                str = role;
+                break;
+        }
+        return str;
+    }
+
+    const formatNumber = (amount?: string) => {
+        if (!amount) {
+            return "0";
+        }
+        return Number(amount).toLocaleString("en-US");
+    }
     return <BoxOuter>
         <Banner>
             <CenterBox>
                 <AvatarBox>
-                    <img src="https://bafybeihwciazjns5wjehd3464ipqzxn2kzutazj2ovk3bol4oxjvpcl5za.ipfs.dweb.link/17_3.png" alt=""/>
+                    {
+                        !!detail?.avatar &&<img src={detail?.avatar} alt=""/>
+                    }
+                    {
+                        !detail?.avatar &&<PersonFill  className="iconBox"/>
+                    }
                 </AvatarBox>
-                <TitleBox>baiyu.seedao</TitleBox>
-                <NameBox>baiyu</NameBox>
+
+
+                <TitleBox>{detail?.sns}</TitleBox>
+                <NameBox>{detail?.nickname}</NameBox>
                 <DescBox>
-                    Dev Mode is a new space in Figma that makes dev work easier. Inspect mocks, diff design changes, copy code snippets, and work with the tools you use every day.
+                    {detail?.bio}
                 </DescBox>
             </CenterBox>
         </Banner>
         <MainBox>
-            <TagBox>
-                <TagCenter>
-                    {
-                        [...Array(8)].map((item,index)=>(<li key={index}>SeeDAO Member</li>
-
-                        ))
-                    }
-
-                </TagCenter>
-
-            </TagBox>
+            <Roles roles={detail?.roles} switchRoles={switchRoles}/>
             <SeedBox>
                 {
                     [...Array(3)].map((item,index)=>(<li key={`seed_${index}`}>
@@ -262,36 +394,23 @@ export default function Home2(){
             <ProgressOuter>
                 <FstLine>
                     <LevelBox>
-                        Level 5
+                        {t('level')} {detail?.level?.current_lv}
                     </LevelBox>
-                    <SCRBox>1,120,72xx SCR</SCRBox>
+                    <SCRBox>{formatNumber(detail?.scr?.amount)} SCR</SCRBox>
                 </FstLine>
-                <ProgressBox width="80">
+                <ProgressBox width={detail?.level?.upgrade_percent}>
                     <div className="inner" />
                 </ProgressBox>
                 <TipsBox>
-                    NEXT LEVEL:172xxx SCR
+                    {t('nextLevel')}:{formatNumber(detail?.level?.scr_to_next_lv)} SCR
                 </TipsBox>
             </ProgressOuter>
 
             <SbtOuter>
                 {
-                    [...Array(2)].map((item,index)=>(<dl key={`sbt_${index}`}>
-                        <dt>SBT <span>市政厅/节点</span></dt>
-                        <dd>
-                            <ul>
-                                {
-                                    [...Array(5)].map((inner,InnerIdx) =>(<li key={`sbtInner_${InnerIdx}`}>
-                                        <div className="imgBox"></div>
-                                        <div className="title">SeeDAO新手村第1期新手营游戏设计团队</div>
-                                        <div className="num">ID: 31</div>
-                                    </li>))
-                                }
-
-                            </ul>
-                        </dd>
-                    </dl>))
+                    sbt?.map((item:any,index:number)=>( <SBT current={index} key={index} item={item} />))
                 }
+
             </SbtOuter>
             <LastLine>
                 {

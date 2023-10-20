@@ -5,7 +5,7 @@ import {
 } from "react-router-dom";
 // import Profile from "./pages/profile";
 import NotFound from "./pages/404";
-import Home from "./pages/home";
+import Home from "./pages/home2";
 import Tips from "./pages/tips";
 
 export default function RouterLink() {

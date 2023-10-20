@@ -127,8 +127,8 @@ export default function SBT(props:Iprops){
                                 <div className="imgBox">
                                     <img src={it.image_uri} alt=""/>
                                 </div>
-                                <div className="title">SeeDAO新手村第1期新手营游戏设计团队</div>
-                                <div className="num">ID: 31</div>
+                                <div className="title">{it?.metadata?.name}</div>
+                                <div className="num">ID: {it?.metadata?.id}</div>
                             </SwiperSlide>))
                         }
 

@@ -58,6 +58,7 @@ const TitleBox = styled.div`
   line-height: 67px;
   margin-top: 5px;
   text-align: center;
+  font-family: "AlibabaPuHuiTi-SemiBold";
 `
 const NameBox = styled.div`
     font-size: 24px;
@@ -417,10 +418,16 @@ export default function HomePC(){
 
             </SbtOuter>
             <LastLine>
+
+
                 {
-                    [...Array(3)].map((inner,InnerIdx) =>(<li key={`sbtInner_${InnerIdx}`}>
-                        <Logo></Logo>
-                        <div className="tit">Discord</div>
+                    detail?.social_accounts?.map((item:any,index:number)=>( <li key={`sbtInner_${index}`}>
+                        <dt>
+                            {/*<img src={returnIcon(item.network)} alt=""/>*/}
+                            {/*<span className="iconLft">{returnSocial(item.network, item.identity)?.[0]}</span>*/}
+                            <Logo></Logo>
+                            <div className="tit">{item.network}</div>
+                        </dt>
                     </li>))
                 }
             </LastLine>

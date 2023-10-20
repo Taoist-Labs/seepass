@@ -454,10 +454,16 @@ export default function HomeMobile(){
                 </ul>
             </MidLine>
             <LastLine>
+
+
                 {
-                    [...Array(3)].map((inner,InnerIdx) =>(<li key={`sbtInner_${InnerIdx}`}>
-                        <Logo></Logo>
-                        <div className="tit">Discord</div>
+                    detail?.social_accounts?.map((item:any,index:number)=>( <li key={`sbtInner_${index}`}>
+                        <dt>
+                            {/*<img src={returnIcon(item.network)} alt=""/>*/}
+                            {/*<span className="iconLft">{returnSocial(item.network, item.identity)?.[0]}</span>*/}
+                            <Logo></Logo>
+                            <div className="tit">{item.network}</div>
+                        </dt>
                     </li>))
                 }
             </LastLine>

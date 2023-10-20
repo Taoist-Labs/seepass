@@ -11,7 +11,7 @@ import 'swiper/css/pagination';
 const TagBox = styled.div`
     background: #fff;
   border-radius: 30px;
-  padding:30px 30px 10px;
+  padding:30px 30px 0;
   margin: 0 30px;
   position: relative;
   z-index: 1;

@@ -9,6 +9,7 @@ import axios from "axios";
 import {Discord, Google, PersonFill, Twitter, Wechat} from "react-bootstrap-icons";
 import MirrorImg from "./mirror.png";
 import Loading from "./loading";
+import Seed from "../components/seed";
 
 const BoxOuter = styled.div`
     display: flex;
@@ -410,6 +411,11 @@ export default function HomePC(){
                     {t('nextLevel')}:{formatNumber(detail?.level?.scr_to_next_lv)} SCR
                 </TipsBox>
             </ProgressOuter>
+
+            <SbtOuter>
+                <Seed  current="seed" item={detail?.seed} />
+
+            </SbtOuter>
 
             <SbtOuter>
                 {

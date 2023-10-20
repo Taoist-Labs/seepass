@@ -128,7 +128,7 @@ export default function SBT(props:Iprops){
                                     <img src={it.image_uri} alt=""/>
                                 </div>
                                 <div className="title">{it?.metadata?.name}</div>
-                                <div className="num">ID: {it?.metadata?.id}</div>
+                                <div className="num">ID: {it?.token_id}</div>
                             </SwiperSlide>))
                         }
 

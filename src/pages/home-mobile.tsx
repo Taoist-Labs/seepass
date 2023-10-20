@@ -8,6 +8,8 @@ import {Discord, Google, PersonFill, Twitter, Wechat} from "react-bootstrap-icon
 import MirrorImg from "./mirror.png";
 import Roles from "../components/roleMobile";
 import Loading from "./loading";
+import StarL from "../assets/newImages/starL.png";
+import StarR from "../assets/newImages/starR.png";
 
 
 const BoxOuter = styled.div`
@@ -40,17 +42,37 @@ const AvatarBox = styled.div`
   width: 100px;
   height: 100px;
   border-radius: 15px;
-  overflow: hidden;
   background: #fff;
+  position: relative;
+  .lft{
+    background: url(${StarL});
+    width: 114px;
+    height: 41px;
+    position: absolute;
+    left: -70px;
+    top: 50px;
+  }
+  .rht{
+    background: url(${StarR});
+    width: 114px;
+    height: 41px;
+    position: absolute;
+    right: -70px;
+    top: 10px;
+  }
   .iconBox{
     font-size:100px;
     color: rgba(0,0,0,0.12);
+    position: relative;
+    z-index: 5;
   }
   img{
     width: 100%;
     height: 100%;
     border-radius: 15px;
     border: 2px solid #fff;
+    position: relative;
+    z-index: 5;
   }
 `
 
@@ -188,7 +210,6 @@ const MidLine = styled.div`
 `
 
 export default function HomeMobile(){
-
     const { i18n,t } = useTranslation();
     const [ detail,setDetail] = useState<any>();
     const {id} = useParams();
@@ -377,6 +398,10 @@ export default function HomeMobile(){
         }
         return Number(amount).toLocaleString("en-US");
     }
+
+    const toGo = () =>{
+        navigate(`/detail/${id}`)
+    }
     return <BoxOuter>
         {
             show && <Loading />
@@ -384,6 +409,8 @@ export default function HomeMobile(){
         <BannerBox>
             <InnerBox>
                 <AvatarBox>
+                    <div className="lft" />
+                    <div className="rht" />
                     {
                         !!detail?.avatar &&<img src={detail?.avatar} alt=""/>
                     }
@@ -417,7 +444,7 @@ export default function HomeMobile(){
             <MidLine>
                 <div className="fst">
                     <div className="tit">XXX</div>
-                    <div className="more">More</div>
+                    <div className="more" onClick={()=>toGo()}>More</div>
                 </div>
                 <ul>
                     {

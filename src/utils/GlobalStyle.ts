@@ -1,5 +1,5 @@
 import { createGlobalStyle } from "styled-components";
-import "../assets/style/font.css";
+import "../assets/style/newfont.css";
 
 const GlobalStyle = createGlobalStyle`
   body,html{
@@ -7,10 +7,7 @@ const GlobalStyle = createGlobalStyle`
     color: #000;
     padding: 0;
     margin: 0;
-    font-family: "Inter-Regular",-apple-system,BlinkMacSystemFont,
-    "Segoe UI",Roboto,"Helvetica Neue",
-    Arial,sans-serif,"Apple Color Emoji",
-    "Segoe UI Emoji","Segoe UI Symbol" ;
+  
     //font-size: 14px;
   }
   dl,dt,ul,li{
@@ -19,7 +16,12 @@ const GlobalStyle = createGlobalStyle`
     list-style: none;
   }
   *{
-
+    font-family: "AlibabaPuHuiTi-Regular",-apple-system,BlinkMacSystemFont,
+    "Segoe UI",Roboto,"Helvetica Neue",
+    Arial,sans-serif,"Apple Color Emoji",
+    "Segoe UI Emoji","Segoe UI Symbol" ;
+    
+    scrollbar-width: none!important;
     &::-webkit-scrollbar {
       width: 0;
       height: 0;

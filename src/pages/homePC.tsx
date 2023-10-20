@@ -8,6 +8,7 @@ import {useNavigate, useParams} from "react-router-dom";
 import axios from "axios";
 import {Discord, Google, PersonFill, Twitter, Wechat} from "react-bootstrap-icons";
 import MirrorImg from "./mirror.png";
+import Loading from "./loading";
 
 const BoxOuter = styled.div`
     display: flex;
@@ -363,6 +364,9 @@ export default function HomePC(){
         return Number(amount).toLocaleString("en-US");
     }
     return <BoxOuter>
+        {
+            show && <Loading />
+        }
         <Banner>
             <CenterBox>
                 <AvatarBox>

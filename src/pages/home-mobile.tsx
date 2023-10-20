@@ -7,6 +7,7 @@ import RoleMobile from "../components/roleMobile";
 import {Discord, Google, PersonFill, Twitter, Wechat} from "react-bootstrap-icons";
 import MirrorImg from "./mirror.png";
 import Roles from "../components/roleMobile";
+import Loading from "./loading";
 
 
 const BoxOuter = styled.div`
@@ -377,6 +378,9 @@ export default function HomeMobile(){
         return Number(amount).toLocaleString("en-US");
     }
     return <BoxOuter>
+        {
+            show && <Loading />
+        }
         <BannerBox>
             <InnerBox>
                 <AvatarBox>

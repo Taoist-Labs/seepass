@@ -3,7 +3,6 @@ import {useTranslation} from "react-i18next";
 import {useEffect, useState} from "react";
 import {useNavigate, useParams} from "react-router-dom";
 import axios from "axios";
-import RoleMobile from "../components/roleMobile";
 import {Discord, Google, PersonFill, Twitter, Wechat} from "react-bootstrap-icons";
 import MirrorImg from "./mirror.png";
 import Roles from "../components/roleMobile";

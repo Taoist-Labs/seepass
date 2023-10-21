@@ -59,7 +59,12 @@ const TagLessBox = styled.ul`
     margin-bottom: 10px;
     font-size: 12px;
     justify-content: center;
+    white-space: nowrap;
+    overflow: hidden;
+    box-sizing: border-box;
+    padding: 0 20px;
   }
+  
 
 `
 

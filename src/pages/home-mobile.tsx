@@ -12,6 +12,7 @@ import StarR from "../assets/newImages/starR.png";
 
 import SeedCatMobile from "../components/seedCatMobile";
 import SbtCatMobile from "../components/sbtCatMobile";
+import {Form} from "react-bootstrap";
 
 
 const BoxOuter = styled.div`
@@ -213,6 +214,14 @@ const MidLine = styled.div`
   }
 `
 
+const LanBox = styled.div`
+    position: absolute;
+  right: 20px;
+  top:10px;
+  z-index: 9;
+
+`
+
 export default function HomeMobile(){
     const { i18n,t } = useTranslation();
     const [ detail,setDetail] = useState<any>();
@@ -401,6 +410,17 @@ export default function HomeMobile(){
         {
             show && <Loading />
         }
+
+        <LanBox>
+            <Form.Select
+                data-bs-theme="dark"
+                size="sm" value={getLanguages().find((item) => item.value === lan)?.value || getLanguages()[0].value} onChange={(event: any) => changeLang(event.target.value)}>
+                {
+                    getLanguages().map((item,index)=><option value={item.value} key={index} >{item.label}</option>)
+                }
+
+            </Form.Select>
+        </LanBox>
         <BannerBox>
             <InnerBox>
                 <AvatarBox>

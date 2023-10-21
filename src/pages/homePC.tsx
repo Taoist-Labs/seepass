@@ -11,6 +11,7 @@ import MirrorImg from "./mirror.png";
 import Loading from "./loading";
 import Seed from "../components/seed";
 import Cat from "../components/cat";
+import {Form} from "react-bootstrap";
 
 const BoxOuter = styled.div`
     display: flex;
@@ -164,6 +165,12 @@ const Logo = styled.div`
   line-height: 100px;
 `
 
+const LanBox = styled.div`
+    position: absolute;
+  right: 20px;
+  top:10px;
+
+`
 
 export default function HomePC(){
 
@@ -350,6 +357,17 @@ export default function HomePC(){
         {
             show && <Loading />
         }
+
+        <LanBox>
+            <Form.Select
+                data-bs-theme="dark"
+                size="sm" value={getLanguages().find((item) => item.value === lan)?.value || getLanguages()[0].value} onChange={(event: any) => changeLang(event.target.value)}>
+                {
+                    getLanguages().map((item,index)=><option value={item.value} key={index} >{item.label}</option>)
+                }
+
+            </Form.Select>
+        </LanBox>
         <Banner>
             <CenterBox>
                 <AvatarBox>

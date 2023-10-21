@@ -121,7 +121,7 @@ const SbtOuter =styled.div`
 
 const SeedTop = styled.div`
   font-size: 24px;
-  font-weight: 900;
+  font-weight: 700;
   margin-bottom: 10px;
   text-align: center;
 `

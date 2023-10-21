@@ -101,7 +101,7 @@ const DescBox = styled.div`
 `
 
 const MainBox = styled.div`
-    margin: -30px auto 0;
+    margin: -30px 0 0;
   display: flex;
   flex-direction: column;
 `

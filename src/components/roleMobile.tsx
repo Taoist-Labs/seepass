@@ -40,6 +40,7 @@ const TagCenter = styled(Swiper)`
     align-items: center;
     font-size: 12px;
     justify-content: center;
+    padding: 0 20px;
   }
 
 `

@@ -11,6 +11,9 @@ import Loading from "./loading";
 import StarL from "../assets/newImages/starL.png";
 import StarR from "../assets/newImages/starR.png";
 
+import SeedCatMobile from "../components/seedCatMobile";
+import SbtCatMobile from "../components/sbtCatMobile";
+
 
 const BoxOuter = styled.div`
     display: flex;
@@ -440,10 +443,12 @@ export default function HomeMobile(){
                     <div className="more" onClick={()=>toGo()}>More</div>
                 </div>
                 <ul>
-                    {
-                        [...Array(2)].map((inner,InnerIdx) =>(<li key={`sbtInner_${InnerIdx}`}>
-                        </li>))
-                    }
+                    <li>
+                        <SeedCatMobile  seed={detail?.seed} />
+                    </li>
+                    <li>
+                        <SbtCatMobile sbt={detail?.sbt} />
+                    </li>
                 </ul>
             </MidLine>
             <LastLine>

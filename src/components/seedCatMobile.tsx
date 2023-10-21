@@ -8,8 +8,8 @@ const Box = styled.div`
   height: 100%;
   position: relative;
     .imgBox{
-      width: 200px;
-      height: 200px;
+      width: 100px;
+      height: 100px;
       img{
         width: 100%;
         height: 100%;
@@ -20,24 +20,24 @@ const Box = styled.div`
     }
   .decBtm{
       position: absolute;
-    bottom: 5px;
+    bottom:1px;
     z-index: 9;
-    font-size: 30px;
-    line-height: 35px;
+    font-size: 15px;
+    line-height: 15px;
     text-align: center;
     .nft{
       color: #b5b6c4;
     }
     .seed{
-      color: #fff;
+      color: #000;
     }
   }
   .num{
     position: absolute;
     z-index: 9;
-    font-size: 60px;
-    color: #fff;
-    right: 40px;
+    font-size: 30px;
+    color: #000;
+    right: 10px;
     bottom: 0;
   }
 `
@@ -45,18 +45,18 @@ const Box = styled.div`
 const  LftTop = styled.div`
   position: absolute;
   z-index: 9;
-  left: 20px;
-  top:20px;
+  left: 10px;
+  top:10px;
   img{
-    width: 60px;
-    height: 60px;
+    width: 30px;
+    height: 30px;
     border-radius: 60px;
-    border:3px solid #fff;
+    border:3px solid #000;
   }
   div{
     position: absolute;
-    width: 60px;
-    height: 60px;
+    width: 30px;
+    height: 30px;
   }
   .fst{
     position: relative;
@@ -71,13 +71,13 @@ const  LftTop = styled.div`
     filter: grayscale(100%) contrast(200%);
     filter: gray contrast(200%);
 
-    left: 30px;
+    left: 15px;
     top: 0;
   }
 
 `
 
-export default function SeedCat({seed}:any){
+export default function SeedCatMobile({seed}:any){
 
     return <Box>
         {

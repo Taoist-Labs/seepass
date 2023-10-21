@@ -63,6 +63,29 @@ const TagCenter = styled(Swiper)`
   }
 
 `
+const TagLessBox = styled.ul`
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  padding-bottom: 40px;
+  li{
+    border-radius: 45px;
+    border:2px solid #000;
+    width: 24%;
+    height: 40px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-top: 10px !important;
+    margin-right: 10px;
+    
+  }
+
+`
+
+
+
+
 interface roleProps{
     roles:string[]
     switchRoles: (arg:string)=>string;
@@ -71,36 +94,49 @@ interface roleProps{
 export default function Roles(props:roleProps){
     const {roles,switchRoles} = props
     return <>
-
-        <TagBox>
-            <div className="swiper-button-prev swiper-button-prev1"></div>
-            <div className="swiper-button-next swiper-button-next1"></div>
-            <TagCenter
-                slidesPerView={4}
-                grid={{
-                    rows: 2,
-                }}
-                spaceBetween={10}
-                pagination={{
-                    clickable: true,
-                }}
-
-                navigation={
+        {
+            roles?.length <= 8  && <TagBox>
+                <TagLessBox>
                     {
-                        nextEl: '.swiper-button-next1',
-                        prevEl: '.swiper-button-prev1',
+                        roles?.map((item:string,index:number)=>(<li key={`roles_${index}`}>{switchRoles(item)}</li>
+
+                        ))
                     }
-                }
-                modules={[Grid, Pagination,Navigation]}
-            >
+                </TagLessBox>
+            </TagBox>
+        }
+        {
+            roles?.length > 8  && <TagBox>
+                <div className="swiper-button-prev swiper-button-prev1"></div>
+                <div className="swiper-button-next swiper-button-next1"></div>
+                <TagCenter
+                    slidesPerView={4}
+                    grid={{
+                        rows: 2,
+                    }}
+                    spaceBetween={10}
+                    pagination={{
+                        clickable: true,
+                    }}
 
-                {
-                    roles?.map((item:string,index:number)=>(<SwiperSlide className="li" key={`roles_${index}`}>{switchRoles(item)}</SwiperSlide>
+                    navigation={
+                        {
+                            nextEl: '.swiper-button-next1',
+                            prevEl: '.swiper-button-prev1',
+                        }
+                    }
+                    modules={[Grid, Pagination,Navigation]}
+                >
 
-                    ))
-                }
-            </TagCenter>
-        </TagBox>
+                    {
+                        roles?.map((item:string,index:number)=>(<SwiperSlide className="li" key={`roles_${index}`}>{switchRoles(item)}</SwiperSlide>
+
+                        ))
+                    }
+                </TagCenter>
+            </TagBox>
+        }
+
 
 
     </>

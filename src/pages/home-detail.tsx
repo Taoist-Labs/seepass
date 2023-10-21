@@ -230,7 +230,7 @@ export default function HomeDetail(){
             <img src={BackImg} alt=""/>
         </BackLine>
         <FstLine>
-            <div>XXX</div>
+            <div>NFT</div>
 
         </FstLine>
 

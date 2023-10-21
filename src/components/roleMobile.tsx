@@ -28,7 +28,7 @@ const TagBox = styled.div`
 `
 
 const TagCenter = styled(Swiper)`
-  width: 260px;
+  width: 270px;
   height: 150px;
   padding-bottom: 30px;
   .li{
@@ -43,6 +43,25 @@ const TagCenter = styled(Swiper)`
   }
 
 `
+const TagLessBox = styled.ul`
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  padding-bottom: 20px;
+  justify-content: space-between;
+  li{
+    border-radius: 45px;
+    border:1px solid #000;
+    width: 48%;
+    height: 30px;
+    display: flex;
+    align-items: center;
+    margin-bottom: 10px;
+    font-size: 12px;
+    justify-content: center;
+  }
+
+`
 
 interface roleProps{
     roles:string[]
@@ -51,27 +70,41 @@ interface roleProps{
 export default function RoleMobile(props:roleProps){
     const {roles,switchRoles} = props
     return <>
-        <TagBox>
-            <TagCenter
-                slidesPerView={2}
-                grid={{
-                    rows: 3,
-                }}
-                spaceBetween={10}
-                pagination={{
-                    clickable: true,
-                }}
+        {
+            roles?.length <= 6 &&<TagBox>
+                <TagLessBox>
+                    {
+                        roles?.map((item:string,index:number)=>(<li key={`roles_${index}`}>{switchRoles(item)}</li>
 
-                modules={[Grid, Pagination]}
-            >
+                        ))
+                    }
+                </TagLessBox>
 
-                {
-                    roles?.map((item:string,index:number)=>(<SwiperSlide className="li" key={`roles_${index}`}>{switchRoles(item)}</SwiperSlide>
+            </TagBox>
+        }
+        {
+         roles?.length > 6  &&<TagBox>
+        <TagCenter
+            slidesPerView={2}
+            grid={{
+                rows: 3,
+            }}
+            spaceBetween={10}
+            pagination={{
+                clickable: true,
+            }}
 
-                    ))
-                }
-            </TagCenter>
+            modules={[Grid, Pagination]}
+        >
 
-        </TagBox>
+            {
+                roles?.map((item:string,index:number)=>(<SwiperSlide className="li" key={`roles_${index}`}>{switchRoles(item)}</SwiperSlide>
+
+                ))
+            }
+        </TagCenter>
+
+    </TagBox>
+        }
     </>
 }

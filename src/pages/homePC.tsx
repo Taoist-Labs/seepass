@@ -59,7 +59,6 @@ const TitleBox = styled.div`
   line-height: 67px;
   margin-top: 5px;
   text-align: center;
-  font-family: "AlibabaPuHuiTi-SemiBold";
 `
 const NameBox = styled.div`
     font-size: 24px;
@@ -154,6 +153,7 @@ const LastLine = styled.ul`
     display: flex;
   align-items: center;
   justify-content: center;
+  margin-bottom: 80px;
   .tit{
     text-align: center;
     font-size: 18px;
@@ -171,7 +171,8 @@ const Logo = styled.div`
   border-radius: 100px;
   background: #D9D9D9;
   margin: 5px 30px;
-
+  font-size: 40px;
+  line-height: 100px;
 `
 
 
@@ -253,33 +254,24 @@ export default function HomePC(){
     }
 
     const returnSocial = (str: string, val: string) => {
-        // switch (str) {
-        //     case "twitter":
-        //         return [
-        //             <Twitter />,
-        //             <SocialLink href={val} target="_blank">
-        //                 {val}
-        //             </SocialLink>,
-        //         ];
-        //     case "wechat":
-        //         return [<Wechat />, val];
-        //     case "google":
-        //         return [
-        //             <Google />,
-        //             <SocialLink href={`mailto:${val}`} target="_blank">
-        //                 {val}
-        //             </SocialLink>,
-        //         ];
-        //     case "discord":
-        //         return [<Discord />, val];
-        //     case "mirror":
-        //         return [
-        //             <img src={MirrorImg} alt="" />,
-        //             <SocialLink href={val} target="_blank">
-        //                 {val}
-        //             </SocialLink>,
-        //         ];
-        // }
+        switch (str) {
+            case "twitter":
+                return <a href={val} target="_blank">
+                        <Twitter color="#1a8acf" />
+                    </a>;
+            case "wechat":
+                return <Wechat color="#25b423" />;
+            case "google":
+                return<a href={`mailto:${val}`} target="_blank">
+                        <Google color="#eb5a56" />
+                    </a>;
+            case "discord":
+                return <Discord color="#4757e8" />;
+            case "mirror":
+                return <a href={val} target="_blank">
+                    <img src={MirrorImg} alt="" />
+                </a>;
+        }
     };
 
     const changeLang = (v: string) => {
@@ -429,9 +421,9 @@ export default function HomePC(){
                 {
                     detail?.social_accounts?.map((item:any,index:number)=>( <li key={`sbtInner_${index}`}>
                         <dt>
-                            {/*<img src={returnIcon(item.network)} alt=""/>*/}
-                            {/*<span className="iconLft">{returnSocial(item.network, item.identity)?.[0]}</span>*/}
-                            <Logo></Logo>
+                            <Logo>
+                                <span className="iconLft">{returnSocial(item.network, item.identity)}</span>
+                            </Logo>
                             <div className="tit">{item.network}</div>
                         </dt>
                     </li>))

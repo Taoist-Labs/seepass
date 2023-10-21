@@ -10,6 +10,7 @@ import {Discord, Google, PersonFill, Twitter, Wechat} from "react-bootstrap-icon
 import MirrorImg from "./mirror.png";
 import Loading from "./loading";
 import Seed from "../components/seed";
+import Cat from "../components/cat";
 
 const BoxOuter = styled.div`
     display: flex;
@@ -81,19 +82,7 @@ const MainBox = styled.div`
 `
 
 
-const SeedBox = styled.div`
-    display: flex;
-  align-items: center;
-  justify-content: center;
-  margin-top: 80px;
-  li{
-    width: 280px;
-    height: 280px;
-    background: #000;
-    border-radius: 20px;
-    margin: 0 40px;
-  }
-`
+
 
 const ProgressOuter = styled.div`
   display: flex;
@@ -382,13 +371,7 @@ export default function HomePC(){
         </Banner>
         <MainBox>
             <Roles roles={detail?.roles} switchRoles={switchRoles}/>
-            {/*<SeedBox>*/}
-            {/*    {*/}
-            {/*        [...Array(3)].map((item,index)=>(<li key={`seed_${index}`}>*/}
-
-            {/*        </li>))*/}
-            {/*    }*/}
-            {/*</SeedBox>*/}
+            <Cat sbt={sbt} seed={detail?.seed} />
             <ProgressOuter>
                 <FstLine>
                     <LevelBox>

@@ -163,11 +163,13 @@ const LastLine = styled.ul`
     display: flex;
   align-items: center;
   justify-content: center;
+  margin: 0 20px;
   .tit{
     text-align: center;
-    font-size: 18px;
+    font-size: 12px;
     color: #000;
     margin: 10px 0 80px;
+    
   }
 `
 
@@ -179,7 +181,7 @@ const Logo = styled.div`
   height: 50px;
   border-radius: 100px;
   background: #D9D9D9;
-  margin: 5px 30px;
+  margin: 5px 10px;
   font-size: 25px;
   line-height: 50px;
 
@@ -206,8 +208,8 @@ const MidLine = styled.div`
     justify-content: space-between;
   }
   li{
-    width: 140px;
-    height: 140px;
+    width: 40vw;
+    height: 40vw;
     border-radius: 20px;
     background: #fff;
     
@@ -275,8 +277,8 @@ export default function HomeMobile(){
 
                 let sbtArr = data.sbt;
 
-
-                const groupedData = sbtArr.reduce((result:any, item:any) => {
+                const sbtFor = sbtArr.filter((item:any)=>item.name && item.image_uri);
+                const groupedData = sbtFor.reduce((result:any, item:any) => {
                     const key = item?.metadata?.properties?.category? item?.metadata?.properties?.category:"others";
                     const group = result?.find((group:any) => group.category === key);
                     if (group) {
@@ -462,19 +464,17 @@ export default function HomeMobile(){
                     <div className="more" onClick={()=>toGo()}>More</div>
                 </div>
                 <ul>
-                    <li>
+                    <li onClick={()=>toGo()}>
                         <SeedCatMobile  seed={detail?.seed} />
                     </li>
-                    <li>
+                    <li onClick={()=>toGo()}>
                         <SbtCatMobile sbt={detail?.sbt} />
                     </li>
                 </ul>
             </MidLine>
             <LastLine>
-
-
                 {
-                    detail?.social_accounts?.map((item:any,index:number)=>( <li key={`sbtInner_${index}`}>
+                    detail?.social_accounts?.map((item:any,index:number)=>( <li key={`sbtInner_${index}`} >
                         <dt>
                             <Logo>
                                 <span className="iconLft">{returnSocial(item.network, item.identity)}</span>

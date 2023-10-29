@@ -37,8 +37,8 @@ const InnerBox = styled.div`
   align-items: center;
   margin-top: -20px;
   .imgBox{
-    width: 60px;
-    height: 60px;
+    width: 15vw;
+    height: 15vw;
     img{
       width: 100%;
       height: 100%;

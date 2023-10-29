@@ -8,8 +8,8 @@ const Box = styled.div`
   height: 100%;
   position: relative;
     .imgBox{
-      width: 100px;
-      height: 100px;
+      width: 70%;
+      height: 70%;
       img{
         width: 100%;
         height: 100%;

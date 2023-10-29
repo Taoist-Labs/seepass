@@ -57,6 +57,7 @@ const SeedBox = styled.div`
 
 const SbtOuter =styled.div`
   margin-top: 30px;
+  font-size: 12px;
     dl{
       margin-bottom: 50px;
     }
@@ -85,7 +86,7 @@ const SbtOuter =styled.div`
     box-sizing: border-box;
     width: 90px;
     flex-shrink: 0;
-    height: 120px;
+    height: 160px;
     &:first-child{
       margin-left: 20px;
     }
@@ -188,9 +189,9 @@ export default function HomeDetail(){
                 setDetail(data)
 
                 let sbtArr = data.sbt;
+                const sbtFor = sbtArr.filter((item:any)=>item.name && item.image_uri);
 
-
-                const groupedData = sbtArr.reduce((result:any, item:any) => {
+                const groupedData = sbtFor.reduce((result:any, item:any) => {
                     const key = item?.metadata?.properties?.category? item?.metadata?.properties?.category:"others";
                     const group = result?.find((group:any) => group.category === key);
                     if (group) {
@@ -253,9 +254,7 @@ export default function HomeDetail(){
             </SeedBox>
         </div>
 
-
         <SbtOuter>
-
 
             {
                 sbt?.map((item:any,index:number)=>(<dl key={`sbt_${index}`}>
@@ -270,6 +269,8 @@ export default function HomeDetail(){
                                     <div className="imgBox">
                                         <img src={it.image_uri} alt=""/>
                                     </div>
+                                    <div className="title">{it?.metadata?.name}</div>
+                                    <div className="num">ID: {it?.token_id}</div>
                                 </li>))
                             }
 

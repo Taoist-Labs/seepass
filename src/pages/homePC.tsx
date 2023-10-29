@@ -230,10 +230,13 @@ export default function HomePC(){
 
                 let sbtArr = data.sbt;
 
+                const sbtFor = sbtArr.filter((item:any)=>item.name && item.image_uri);
 
-                const groupedData = sbtArr.reduce((result:any, item:any) => {
+
+                const groupedData = sbtFor.reduce((result:any, item:any) => {
                     const key = item?.metadata?.properties?.category? item?.metadata?.properties?.category:"others";
                     const group = result?.find((group:any) => group.category === key);
+
                     if (group) {
                         group.tokens.push(item);
                     } else {

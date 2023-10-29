@@ -160,9 +160,13 @@ const Logo = styled.div`
   height: 100px;
   border-radius: 100px;
   background: #D9D9D9;
-  margin: 5px 30px;
+  margin: 0 30px;
   font-size: 40px;
   line-height: 100px;
+  overflow: hidden;
+  .iconLft{
+    margin-top: -5px;
+  }
 `
 
 const LanBox = styled.div`
@@ -425,7 +429,13 @@ export default function HomePC(){
                             <Logo>
                                 <span className="iconLft">{returnSocial(item.network, item.identity)}</span>
                             </Logo>
-                            <div className="tit">{item.network}</div>
+                            {
+                                (item.network === "discord" || item.network === "wechat") && <div className="tit">{item.identity}</div>
+                            }
+                            {
+                                item.network !== "discord" && item.network !== "wechat" &&<div className="tit">{item.network}</div>
+                            }
+
                         </dt>
                     </li>))
                 }

@@ -168,8 +168,13 @@ const LastLine = styled.ul`
     text-align: center;
     font-size: 12px;
     color: #000;
-    margin: 10px 0 80px;
-    
+    margin: 10px 10px 80px;
+  }
+  dt{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
   }
 `
 
@@ -184,7 +189,9 @@ const Logo = styled.div`
   margin: 5px 10px;
   font-size: 25px;
   line-height: 50px;
-
+  .iconLft{
+    margin-top: -2px;
+  }
 `
 const MidLine = styled.div`
   margin: 0 30px  40px;
@@ -479,7 +486,13 @@ export default function HomeMobile(){
                             <Logo>
                                 <span className="iconLft">{returnSocial(item.network, item.identity)}</span>
                             </Logo>
-                            <div className="tit">{item.network}</div>
+
+                            {
+                                (item.network === "discord" || item.network === "wechat") && <div className="tit">{item.identity}</div>
+                            }
+                            {
+                                item.network !== "discord" && item.network !== "wechat" &&<div className="tit">{item.network}</div>
+                            }
                         </dt>
                     </li>))
                 }

@@ -262,18 +262,21 @@ export default function HomePC(){
                 return <a href={val} target="_blank">
                         <Twitter color="#1a8acf" />
                     </a>;
-            case "wechat":
-                return <Wechat color="#25b423" />;
+
             case "google":
                 return<a href={`mailto:${val}`} target="_blank">
                         <Google color="#eb5a56" />
                     </a>;
-            case "discord":
-                return <Discord color="#4757e8" />;
+
             case "mirror":
                 return <a href={val} target="_blank">
                     <img src={MirrorImg} alt="" />
                 </a>;
+            case "wechat":
+                // return <Wechat color="#25b423" />;
+            case "discord":
+                // return <Discord color="#4757e8" />;
+                return null
         }
     };
 
@@ -427,20 +430,22 @@ export default function HomePC(){
 
 
                 {
-                    detail?.social_accounts?.map((item:any,index:number)=>( <li key={`sbtInner_${index}`}>
-                        <dt>
-                            <Logo>
-                                <span className="iconLft">{returnSocial(item.network, item.identity)}</span>
-                            </Logo>
-                            {
-                                (item.network === "discord" || item.network === "wechat") && <div className="tit">{item.identity}</div>
-                            }
-                            {
-                                item.network !== "discord" && item.network !== "wechat" &&<div className="tit">{item.network}</div>
-                            }
+                    detail?.social_accounts?.map((item:any,index:number)=>(
+                        returnSocial(item.network, item.identity)?( <li key={`sbtInner_${index}`}>
+                            <dt>
+                                <Logo>
+                                    <span className="iconLft">{returnSocial(item.network, item.identity)}</span>
+                                </Logo>
+                                {
+                                    (item.network === "discord" || item.network === "wechat") && <div className="tit">{item.identity}</div>
+                                }
+                                {
+                                    item.network !== "discord" && item.network !== "wechat" &&<div className="tit">{item.network}</div>
+                                }
 
-                        </dt>
-                    </li>))
+                            </dt>
+                        </li>):""
+                       ))
                 }
             </LastLine>
         </MainBox>

@@ -313,18 +313,21 @@ export default function HomeMobile(){
                 return <a href={val} target="_blank">
                     <Twitter color="#1a8acf" />
                 </a>;
-            case "wechat":
-                return <Wechat color="#25b423" />;
+
             case "google":
                 return<a href={`mailto:${val}`} target="_blank">
                     <Google color="#eb5a56" />
                 </a>;
-            case "discord":
-                return <Discord color="#4757e8" />;
+
             case "mirror":
                 return <a href={val} target="_blank">
                     <img src={MirrorImg} alt="" />
                 </a>;
+            case "discord":
+                // return <Discord color="#4757e8" />;
+            case "wechat":
+                // return <Wechat color="#25b423" />;
+                return "";
         }
     };
 
@@ -481,7 +484,9 @@ export default function HomeMobile(){
             </MidLine>
             <LastLine>
                 {
-                    detail?.social_accounts?.map((item:any,index:number)=>( <li key={`sbtInner_${index}`} >
+                    detail?.social_accounts?.map((item:any,index:number)=>(
+                        returnSocial(item.network, item.identity)?
+                        (<li key={`sbtInner_${index}`} >
                         <dt>
                             <Logo>
                                 <span className="iconLft">{returnSocial(item.network, item.identity)}</span>
@@ -494,7 +499,7 @@ export default function HomeMobile(){
                                 item.network !== "discord" && item.network !== "wechat" &&<div className="tit">{item.network}</div>
                             }
                         </dt>
-                    </li>))
+                    </li>):""))
                 }
             </LastLine>
         </MainBox>

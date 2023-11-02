@@ -31,7 +31,7 @@ jobs:
          cd seepass-web;
          git config --global user.name dev;
          git config --global user.email dev@seedao.xyz;
-         cp -R ../dist/* .;
+         cp -R ../build/* .;
          git add .;
          git status;
          git commit -m "deploy";

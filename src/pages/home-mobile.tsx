@@ -3,7 +3,7 @@ import {useTranslation} from "react-i18next";
 import {useEffect, useState} from "react";
 import {useNavigate, useParams} from "react-router-dom";
 import axios from "axios";
-import {Discord, Google, PersonFill, Twitter, Wechat} from "react-bootstrap-icons";
+import {Discord, Google, PersonFill, ShareFill, Twitter, Wechat} from "react-bootstrap-icons";
 import MirrorImg from "./mirror.png";
 import Roles from "../components/roleMobile";
 import Loading from "./loading";
@@ -13,6 +13,7 @@ import StarR from "../assets/newImages/starR.png";
 import SeedCatMobile from "../components/seedCatMobile";
 import SbtCatMobile from "../components/sbtCatMobile";
 import {Form} from "react-bootstrap";
+import ShareBox from "../components/share";
 
 
 const BoxOuter = styled.div`
@@ -228,7 +229,16 @@ const LanBox = styled.div`
   right: 20px;
   top:10px;
   z-index: 9;
+  display: flex;
+  align-items: center;
+`
 
+const RhtTop = styled.div`
+    color: #fff;
+  font-size: 12px;
+  white-space: nowrap;
+  margin-left: 10px;
+  cursor: pointer;
 `
 
 export default function HomeMobile(){
@@ -239,6 +249,8 @@ export default function HomeMobile(){
     const [show,setShow] = useState(false);
     const [lan, setLan] = useState('en');
     const [sbt, setSbt] = useState<any[]>([]);
+    const [showShare, setShowShare] = useState(false);
+
 
     const getLanguages = () => [
         {
@@ -256,11 +268,11 @@ export default function HomeMobile(){
         if(!id){
             navigate("/404");
         }else if(id.indexOf(".seedao") === -1){
-            navigate("/404");
+            getDetail(id +".seedao")
+            // navigate("/404");
         }else{
-            getDetail()
+            getDetail(id)
         }
-
     }, [id]);
 
 
@@ -275,8 +287,9 @@ export default function HomeMobile(){
         }
 
     }, []);
-    const getDetail = async() =>{
+    const getDetail = async(id:any) =>{
         setShow(true);
+        console.log(id)
         axios.get(`https://test-seepass-api.seedao.tech/seepass/${id}`)
             .then(response => {
                 const {data} = response;
@@ -418,10 +431,21 @@ export default function HomeMobile(){
     const toGo = () =>{
         navigate(`/detail/${id}`)
     }
+
+    const handleBox = () =>{
+        setShowShare(true)
+    }
+    const CloseShare = () =>{
+        setShowShare(false)
+    }
     return <BoxOuter>
         {
             show && <Loading />
         }
+        {
+            showShare && <ShareBox detail={detail} CloseShare={CloseShare} />
+        }
+
 
         <LanBox>
             <Form.Select
@@ -432,6 +456,9 @@ export default function HomeMobile(){
                 }
 
             </Form.Select>
+            {/*<RhtTop onClick={()=>handleBox()}>*/}
+            {/*    <ShareFill />*/}
+            {/*</RhtTop>*/}
         </LanBox>
         <BannerBox>
             <InnerBox>

@@ -7,6 +7,8 @@ const Box = styled.div`
   justify-content: center;
   height: 100%;
   position: relative;
+  box-shadow: 0 5px 10px rgba(0,0,0,0.1);
+  border-radius: 15px;
 
   .decBtm{
     position: absolute;
@@ -35,10 +37,11 @@ const Box = styled.div`
 const InnerBox = styled.div`
   display: flex;
   align-items: center;
+  justify-content: center;
   margin-top: -20px;
   .imgBox{
-    width: 15vw;
-    height: 15vw;
+    width: 40%;
+    height: 40%;
     img{
       width: 100%;
       height: 100%;

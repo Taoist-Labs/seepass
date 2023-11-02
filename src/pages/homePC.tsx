@@ -6,12 +6,13 @@ import {useTranslation} from "react-i18next";
 import {useEffect, useState} from "react";
 import {useNavigate, useParams} from "react-router-dom";
 import axios from "axios";
-import {Discord, Google, PersonFill, Twitter, Wechat} from "react-bootstrap-icons";
+import {Discord, Google, PersonFill, Twitter, Wechat, ShareFill} from "react-bootstrap-icons";
 import MirrorImg from "./mirror.png";
 import Loading from "./loading";
 import Seed from "../components/seed";
 import Cat from "../components/cat";
 import {Form} from "react-bootstrap";
+import ShareBox from "../components/share";
 
 const BoxOuter = styled.div`
     display: flex;
@@ -173,7 +174,16 @@ const LanBox = styled.div`
     position: absolute;
   right: 20px;
   top:10px;
+  display: flex;
+  align-items: center;
+`
 
+const RhtTop = styled.div`
+    color: #fff;
+  font-size: 12px;
+  white-space: nowrap;
+  margin-left: 10px;
+  cursor: pointer;
 `
 
 export default function HomePC(){
@@ -185,6 +195,7 @@ export default function HomePC(){
     const [show,setShow] = useState(false);
     const [lan, setLan] = useState('en');
     const [sbt, setSbt] = useState<any[]>([]);
+    const [showShare, setShowShare] = useState(false);
 
     const getLanguages = () => [
         {
@@ -202,11 +213,11 @@ export default function HomePC(){
         if(!id){
             navigate("/404");
         }else if(id.indexOf(".seedao") === -1){
-            navigate("/404");
+            getDetail(id +".seedao")
+            // navigate("/404");
         }else{
-            getDetail()
+            getDetail(id)
         }
-
     }, [id]);
 
 
@@ -221,7 +232,7 @@ export default function HomePC(){
         }
 
     }, []);
-    const getDetail = async() =>{
+    const getDetail = async(id:any) =>{
         setShow(true);
         axios.get(`https://test-seepass-api.seedao.tech/seepass/${id}`)
             .then(response => {
@@ -363,9 +374,20 @@ export default function HomePC(){
         }
         return Number(amount).toLocaleString("en-US");
     }
+
+
+    const handleBox = () =>{
+        setShowShare(true)
+    }
+    const CloseShare = () =>{
+        setShowShare(false)
+    }
     return <BoxOuter>
         {
             show && <Loading />
+        }
+        {
+            showShare && <ShareBox detail={detail} CloseShare={CloseShare} />
         }
 
         <LanBox>
@@ -377,6 +399,9 @@ export default function HomePC(){
                 }
 
             </Form.Select>
+            {/*<RhtTop onClick={()=>handleBox()}>*/}
+            {/*    <ShareFill />*/}
+            {/*</RhtTop>*/}
         </LanBox>
         <Banner>
             <CenterBox>

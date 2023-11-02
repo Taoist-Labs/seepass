@@ -1,5 +1,6 @@
 import RouterLink from "./router";
 import GlobalStyle from './utils/GlobalStyle';
+import "./locales";
 
 function App() {
   return (

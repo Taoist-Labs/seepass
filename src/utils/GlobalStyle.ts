@@ -3,14 +3,11 @@ import "../assets/style/font.css";
 
 const GlobalStyle = createGlobalStyle`
   body,html{
-    background: #fff;
+    background: #FBF5EF;
     color: #000;
     padding: 0;
     margin: 0;
-    font-family: "Inter-Regular",-apple-system,BlinkMacSystemFont,
-    "Segoe UI",Roboto,"Helvetica Neue",
-    Arial,sans-serif,"Apple Color Emoji",
-    "Segoe UI Emoji","Segoe UI Symbol" ;
+  
     //font-size: 14px;
   }
   dl,dt,ul,li{
@@ -19,7 +16,13 @@ const GlobalStyle = createGlobalStyle`
     list-style: none;
   }
   *{
+    font-family:  "Inter-Regular",-apple-system,BlinkMacSystemFont,
+    "Segoe UI",Roboto,"Helvetica Neue",
+    Arial,sans-serif,"Apple Color Emoji",
+    "Segoe UI Emoji","Segoe UI Symbol" ;
 
+
+    scrollbar-width: none!important;
     &::-webkit-scrollbar {
       width: 0;
       height: 0;

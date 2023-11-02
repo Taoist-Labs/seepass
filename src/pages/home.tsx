@@ -1,15 +1,53 @@
 import {Row,Col} from "react-bootstrap";
-import styled from "styled-components";
-import TwitterImg from "../assets/images/twitterNor.svg";
-import DiscordImg from "../assets/images/discordNor.svg";
+import styled, { css } from "styled-components";
+// import TwitterImg from "../assets/images/twitterNor.svg";
+// import DiscordImg from "../assets/images/discordNor.svg";
 import axios from 'axios';
 import {useEffect, useState} from "react";
+import {useNavigate, useParams} from "react-router-dom";
+import { PersonFill } from "react-bootstrap-icons"
+import Loading from "./loading";
+import {Twitter, Wechat ,Google,Discord} from "react-bootstrap-icons";
+import MirrorImg from "./mirror.png";
+import {Form} from "react-bootstrap"
+import { useTranslation } from 'react-i18next';
+import EmailIcon from "../assets/images/email.png"
+
+const getLevelColor = (level: string) => {
+    switch (level) {
+        case "0":
+        case "1":
+            return "#FF0000";
+        case "2":
+        case "3":
+            return "#01B492";
+        case "4":
+        case "5":
+            return "#FFFFFF";
+        case "6":
+        case "7":
+            return "#FF0091";
+        case "8":
+        case "9":
+            return "#00B1FF";
+        default:
+            return ""
+    }
+}
+const getLevelBorderColor = (level: string) => {
+    switch (level) {
+        case "4":
+        case "5":
+            return "#000";
+        default:
+            return ""
+    }
+};
 
 const Box = styled.div`
    min-height: 100vh;
-
   display: flex;
-  width: 100%;
+  justify-content: center;
   align-items: stretch;
 `
 const RowBox = styled(Row)`
@@ -22,9 +60,9 @@ const LftBox = styled(Col)`
   justify-content: center;
   align-items: center;
   box-shadow: 0 5px 10px rgba(0,0,0,0.1);
+  position: relative;
   @media (max-width: 991px) {
     box-shadow: none;
-  
   }
   
   
@@ -33,16 +71,26 @@ const LftBox = styled(Col)`
 const Avatar = styled.div`
     border-radius: 20px;
   overflow: hidden;
-  width: 300px;
-  height: 300px;
+  width: 12vw;
+  height:12vw;
+  margin: 0 auto 40px;
   display: flex;
   align-items: center;
   justify-content: center;
-  margin-bottom: 40px;
+  background: #f0f3f8;
   img{
     width: 100%;
     height: 100%;
     object-fit: cover;
+  }
+  .iconBox{
+    font-size:200px;
+    color: rgba(0,0,0,0.12);
+  }
+  @media (max-width: 991px) {
+    width: 200px;
+    height:200px;
+    margin-top: 60px;
   }
 `
 
@@ -67,14 +115,19 @@ const TagLine = styled.div`
   align-items: center;
   justify-content: center;
   flex-wrap: wrap;
-  width: 300px;
-  margin:20px -20px 60px 0;
+  width: 17vw;
+  margin:20px -20px 10px 0;
   .tag{
     border-radius: 4px;
     border: 1px solid #e5e5e5;
     padding:3px 10px;
     margin-right: 20px;
     margin-bottom: 20px;
+    white-space: nowrap;
+    font-size: 12px;
+  }
+  @media (max-width: 991px) {
+    width: 100%;
   }
 `
 
@@ -82,11 +135,22 @@ const LevelBox = styled.div`
     display: flex;
   align-items: center;
   flex-direction: column;
+  @media (max-width: 991px) {
+    margin: 0 auto;
+  }
 `
 interface Props{
-    width:string;
+    width: string;
+    color: string;
+    border: string;
 }
 
+const BorderStyle = css`
+    border: 1px solid #000;
+    .percent {
+        color: #000;
+    }
+`
 const ProgressBox = styled.div<Props>`
     width: 100%;
   height: 12px;
@@ -96,7 +160,7 @@ const ProgressBox = styled.div<Props>`
   overflow: hidden;
   .inner{
     width:${props=>props.width};
-    background: #a16eff;
+    background: ${props=>props.color || "#a16eff"};
     height: 12px;
     position: relative;
   }
@@ -109,6 +173,7 @@ const ProgressBox = styled.div<Props>`
     font-size: 10px;
     color: #eee;
   }
+  ${props => props.border && BorderStyle}
 `
 
 const TipsBox = styled.div`
@@ -127,10 +192,10 @@ const TopLine = styled.div`
   width: 100%;
 `
 
-const Num  = styled.div`
-  font-family: 'Jost-Bold';
-  color: #a16eff;
-`
+const Num = styled.div<{ color: string; border: string }>`
+  font-family: "Jost-Bold";
+  color: ${(props) => props.border || props.color || "#a16eff"};
+`;
 
 const SocialBox =styled.div`
   display: flex;
@@ -145,27 +210,48 @@ const SocialBox =styled.div`
     justify-content: space-between;
     width: 100%;
     font-size: 14px;
+    border-bottom: 1px solid #eee;
   }
   dt{
     font-weight: normal;
+    display: flex;
+    align-content: flex-start;
   }
   dd{
-    color: #a16eff;
-    //text-decoration: underline;
+    padding-top: 10px;
+    margin-left: 20px;
+    word-break: break-all;
+  }
+  .iconLft{
+    color: #007aff;
+    font-size: 20px;
+    margin-right: 10px;
+  }
+  .spanTit{
+    margin-top: 5px;
   }
   img{
-    width: 30px;
+    width:20px;
     cursor: pointer;
   }
 
 `
+const SocialLink = styled.a`
+    
+`;
 
 const Rht = styled.div`
     margin: 0 50px;
   height: 100vh;
   overflow-y: auto;
+  
   display: flex;
   flex-direction: column;
+  box-sizing: border-box;
+  @media (max-width: 991px) {
+    margin: 0;
+  }
+  
 `
 
 
@@ -174,6 +260,7 @@ const TitRhtBox = styled.div`
   text-align: center;
   padding-top: 40px;
   margin-bottom: 20px;
+  box-sizing: border-box;
   .tit{
     font-family: 'Jost-Bold';
     font-size: 24px;
@@ -189,7 +276,8 @@ const TitRhtBox = styled.div`
 `
 
 const ListBox = styled(Row)`
-    margin-top: 30px;
+    margin: 30px 0 0;
+  padding: 0;
 `
 
 const CardBox = styled(Col)`
@@ -220,147 +308,323 @@ const CardBox = styled(Col)`
       position: absolute;
       width: 100%;
       height: 100%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
       img{
-        width: 100%;
-        height: 100%;
+        max-width: 100%;
+        max-height: 100%;
+        //object-fit: cover;
       }
     }
   }
 `
+const LanBox = styled.div`
+    position: absolute;
+  right: 20px;
+  top:30px;
+  select{
+    border: 0;
+  }
+`
 
+const Bio = styled.div`
+    margin-bottom: 60px;
+  font-size: 12px;
+  padding: 20px;
+  background: #f5f5f5;
+  border-radius: 10px;
+  width: 100%;
+  @media (max-width: 991px) {
+    width: 100%;
+  }
+`
 
 
 export default function Home(){
-
+    const { i18n,t } = useTranslation();
     const [ detail,setDetail] = useState<any>();
+    const {id} = useParams();
+    const navigate = useNavigate();
+    const [show,setShow] = useState(false);
+    const [lan, setLan] = useState('en');
+    const [sbt, setSbt] = useState<any[]>([]);
+
+    const getLanguages = () => [
+        {
+            value: 'en',
+            label: 'English',
+        },
+        {
+            value: 'zh',
+            label: '中文',
+        },
+    ];
+
 
     useEffect(() => {
-        getDetail()
+        if(!id){
+            navigate("/404");
+        }else if(id.indexOf(".seedao") === -1){
+            navigate("/404");
+        }else{
+            getDetail()
+        }
+
+    }, [id]);
+
+
+    useEffect(() => {
+        const myLan = localStorage.getItem('language');
+        if (!myLan) {
+            const lanInit = getLanguages()[0];
+            localStorage.setItem('language', lanInit.value);
+            changeLang(lanInit.value);
+        } else {
+            changeLang(myLan);
+        }
+
     }, []);
     const getDetail = async() =>{
-        // axios.get('https://test-seepass-api.seedao.tech/seepass/0x82944b68bB92fA11764041AA61204b5fdC85F429')
-        //     .then(response => {
-        //
-        //         const {data} = response;
-        //         console.log(data)
-        //         setDetail(JSON.parse(data))
-        //         console.log(response.data)
-        //     })
-        //     .catch(error => {
-        //         console.error(error);
-        //     });
+        setShow(true);
+        axios.get(`https://test-seepass-api.seedao.tech/seepass/${id}`)
+            .then(response => {
+                const {data} = response;
+                setDetail(data)
+
+                let sbtArr = data.sbt;
 
 
-        setDetail({
-            "sns": "alice.seedao",
-            "nickname": "alice",
-            "wallet": "0x1234123412341234",
-            "avatar": "https://place-holder.it/1234",
-            "roles": [
-                "SGN Holder",
-                "S4节点"
-            ],
-            "scr": {
-                "amount": "50000",
-                "contract_addr": "0x12341234"
-            },
-            "level": {
-                "current_lv": "2",
-                "next_lv": "3",
-                "scr_to_next_lv": "50000",
-                "upgrade_percent": "37.5"
-            },
-            "seed": [
-                {
-                    "token_id": "123",
-                    "token_amount": "1",
-                    "contract_addr": "0x12341234",
-                    "contract_type": "erc1155",
-                    "image_uri": "https://dweb.link/ipfs/bafybeihwciazjns5wjehd3464ipqzxn2kzutazj2ovk3bol4oxjvpcl5za/123_2.png",
-                }
-            ],
-            "sbt_tokens": [
-                {
-                    "name": "onbroading",
-                    "token_id": "1",
-                    "token_amount": "1",
-                    "contract_addr": "0x12341234",
-                    "contract_type": "erc1155",
-                    "image_uri": "https://place-holder.it/200"
-                }
-            ],
-            "achievements": [],
-            "social_network_accounts": [
-                {
-                    "network": "twitter",
-                    "identity": "alicetwitter"
-                },
-                {
-                    "network": "discord",
-                    "identity": "alicedc"
-                }
-            ]
-        })
+                const groupedData = sbtArr.reduce((result:any, item:any) => {
+                    const key = item?.metadata?.properties?.category? item?.metadata?.properties?.category:"others";
+                    const group = result?.find((group:any) => group.category === key);
+                    if (group) {
+                        group.tokens.push(item);
+                    } else {
+                        result.push({ category: key, tokens: [item] });
+                    }
+                    return result;
+                }, []);
+                setSbt(groupedData)
+
+
+            })
+            .catch(error => {
+                console.error(error);
+                navigate("/tips")
+            }).finally(()=>{
+            setShow(false);
+        });
     }
 
-    const returnIcon = (str:string) =>{
-        let icon;
-        if(str === "twitter"){
-            icon = TwitterImg;
+    const returnSocial = (str: string, val: string) => {
+      switch (str) {
+        case "twitter":
+          return [
+            <Twitter />,
+            <SocialLink href={val} target="_blank">
+              {val}
+            </SocialLink>,
+          ];
+        case "wechat":
+          return [<Wechat />, val];
+        case "google":
+          return [
+            <Google />,
+            <SocialLink href={`mailto:${val}`} target="_blank">
+              {val}
+            </SocialLink>,
+          ];
+        case "discord":
+          return [<Discord />, val];
+        case "mirror":
+          return [
+            <img src={MirrorImg} alt="" />,
+            <SocialLink href={val} target="_blank">
+              {val}
+            </SocialLink>,
+          ];
+      }
+    };
+
+    const changeLang = (v: string) => {
+        setLan(v);
+        localStorage.setItem('language', v);
+        i18n.changeLanguage(v);
+    };
+
+
+    const switchRoles = (role:string) =>{
+        let str:string = "";
+        switch (role){
+            case "SGN_HOLDER":
+                str = t("roles.SGN_HOLDER");
+                break;
+            case "NODE_S1":
+                str = t("roles.NODE_S1");
+                break;
+            case "NODE_S2":
+                str = t("roles.NODE_S2");
+                break;
+            case "NODE_S3":
+                str = t("roles.NODE_S3");
+                break;
+            case "NODE_S4":
+                str = t("roles.NODE_S4");
+                break;
+            case "CITYHALL_S1":
+                str = t("roles.CITYHALL_S1");
+                break;
+            case "CITYHALL_S2":
+                str = t("roles.CITYHALL_S2");
+                break;
+            case "CITYHALL_S3":
+                str = t("roles.CITYHALL_S3");
+                break;
+            case "CITYHALL_S4":
+                str = t("roles.CITYHALL_S4");
+                break;
+            case "CONTRIBUTOR_L1":
+                str = t("roles.CONTRIBUTOR_L1");
+                break;
+            case "CONTRIBUTOR_L2":
+                str = t("roles.CONTRIBUTOR_L2");
+                break;
+            case "CONTRIBUTOR_L3":
+                str = t("roles.CONTRIBUTOR_L3");
+                break;
+            case "CONTRIBUTOR_L4":
+                str = t("roles.CONTRIBUTOR_L4");
+                break;
+            case "CONTRIBUTOR_L5":
+                str = t("roles.CONTRIBUTOR_L5");
+                break;
+            case "CONTRIBUTOR_L6":
+                str = t("roles.CONTRIBUTOR_L6");
+                break;
+            case "CONTRIBUTOR_L7":
+                str = t("roles.CONTRIBUTOR_L7");
+                break;
+            case "CONTRIBUTOR_L8":
+                str = t("roles.CONTRIBUTOR_L8");
+                break;
+            case "CONTRIBUTOR_L9":
+                str = t("roles.CONTRIBUTOR_L9");
+                break;
+            case "SEEDAO_MEMBER":
+                str = t("roles.SEEDAO_MEMBER");
+                break;
+            case "SEEDAO_ONBOARDING":
+                str = t("roles.SEEDAO_ONBOARDING");
+                break;
+            default:
+                str = role;
+                break;
         }
-        else if(str === "discord"){
-            icon = DiscordImg;
-        }
-        return icon;
+        return str;
     }
-    return <Box>
+
+    const formatNumber = (amount?: string) => {
+        if (!amount) {
+            return "0";
+        }
+        return Number(amount).toLocaleString("en-US");
+    }
+
+    return <>
+        {
+            show && <Loading />
+        }
+        <Box>
         <RowBox>
             <LftBox md={12} lg={3}>
+                <LanBox>
+                    <Form.Select size="sm" value={getLanguages().find((item) => item.value === lan)?.value || getLanguages()[0].value} onChange={(event: any) => changeLang(event.target.value)}>
+                        {
+                            getLanguages().map((item,index)=><option value={item.value} key={index} >{item.label}</option>)
+                        }
+
+                    </Form.Select>
+                </LanBox>
+
                 <div>
                     <div className="lftTop">
                         <Avatar>
-                            <img src={detail?.avatar} alt=""/>
-                        </Avatar>
 
-                        <NameBox>
-                            <span className="name">{detail?.sns}</span>
-                        </NameBox>
+                            {
+                                !!detail?.avatar &&<img src={detail?.avatar} alt=""/>
+                            }
+                            {
+                                !detail?.avatar &&<PersonFill  className="iconBox"/>
+                            }
+
+                        </Avatar>
+                        {
+                            (!!detail?.sns || !!detail?.nickname) &&  <NameBox>
+                                <div className="name">{detail?.sns}</div>
+                                <div className="domain">{detail?.nickname}</div>
+                            </NameBox>
+                        }
+
                     </div>
                 <div>
                     <TagLine>
                         {
-                            detail?.roles.map((item:string,index:number)=>( <div className="tag" key={`roles_${index}`}>{item}</div>))
+                            detail?.roles?.map((item:string,index:number)=>( <div className="tag" key={`roles_${index}`}>{switchRoles(item)}</div>))
                         }
                     </TagLine>
+                    {
+                        !!detail?.bio &&<Bio>
+                            {detail?.bio}
+                        </Bio>
+                    }
+
                     <LevelBox>
                         <TopLine>
-                            <div>当前等级</div>
-                            <Num>Level{detail?.level?.current_lv} {detail?.scr?.amount}SCR</Num>
+                            <div>{t('current')}</div>
+                            <Num color={getLevelColor(detail?.level?.current_lv)} border={getLevelBorderColor(detail?.level?.current_lv)}>
+                                {t('level')}{detail?.level?.current_lv} {formatNumber(detail?.scr?.amount)}SCR
+                            </Num>
                         </TopLine>
-                        <ProgressBox width={`${detail?.level?.upgrade_percent}%`}>
+                        <ProgressBox
+                            width={`${detail?.level?.upgrade_percent}%`}
+                            border={getLevelBorderColor(detail?.level?.current_lv)}
+                            color={getLevelColor(detail?.level?.current_lv)}>
                             <div className="inner">
-                                <div className="percent" >{`${detail?.level?.upgrade_percent}%`}</div>
+                                <div className="percent" >{`${detail?.level?.upgrade_percent || 0}%`}</div>
                             </div>
                         </ProgressBox>
                         <TipsBox>
-                            <div>距离下一等级还差</div>
-                            <div>{detail?.level?.scr_to_next_lv}SCR</div>
+                            <div>{t('nextLevel')}</div>
+                            <div>{formatNumber(detail?.level?.scr_to_next_lv)}SCR</div>
                         </TipsBox>
                     </LevelBox>
                     <SocialBox>
                         {
-                            detail?.social_network_accounts.map((item:any,index:number)=>( <dl key={`roles_${index}`}>
+                            detail?.social_accounts?.map((item:any,index:number)=>( <dl key={`roles_${index}`}>
                             <dt>
-                                <img src={returnIcon(item.network)} alt=""/>
-                                <span>{item.network}</span>
+                                {/*<img src={returnIcon(item.network)} alt=""/>*/}
+                                <span className="iconLft">{returnSocial(item.network, item.identity)?.[0]}</span>
+                                <span className="spanTit">{item.network}</span>
                             </dt>
                             <dd>
-                                {item.identity}
+                                {returnSocial(item.network, item.identity)?.[1]}
                             </dd>
                             </dl>))
                         }
-
-
+                        {
+                          detail?.email && <dl>
+                            <dt>
+                                <span className="iconLft"><img src={EmailIcon} alt="" /></span>
+                                <span className="spanTit">{t("email")}</span>
+                            </dt>
+                            <dd>
+                              <SocialLink href={`mailto:${detail.email}`} target="_blank">
+                                  {detail.email}
+                              </SocialLink>
+                            </dd>
+                            </dl>
+                        }
                     </SocialBox>
                 </div>
 
@@ -369,16 +633,15 @@ export default function Home(){
             <Col md={12} lg={9}>
                 <Rht>
                     {
-                        !!detail?.seed.length && <>
+                        !!detail?.seed?.length && <>
                             <TitRhtBox>
                                 <div className="tit">SEED</div>
-                                <div className="tips">Seed NFT serves as a citizenship proof within the SeeDAO network polis and is a prerequisite to obtain governance rights.
-                                    Every Seed NFT is an unique seed, capturing your personal imprint on our shared SeeDAO journey.</div>
+                                <div className="tips">{t('seedTips')}</div>
                             </TitRhtBox>
                             <ListBox>
                                 {
-                                    detail?.seed.map((item:any,index:number)=>(
-                                        <CardBox md={3} key={`seed_${index}`}>
+                                    detail?.seed?.map((item:any,index:number)=>(
+                                        <CardBox md={2} key={`seed_${index}`}>
                                             <div className="bgBox">
                                                 <div className="photo">
                                                     <div className="aspect" />
@@ -395,23 +658,21 @@ export default function Home(){
                             </ListBox>
                         </>
                     }
-
                     {
-                        !!detail?.sbt_tokens.length && <>
+                        sbt?.map((item:any,index:number)=>(<div key={`sbt_${index}`}>
                             <TitRhtBox>
-                                <div className="tit">SBT</div>
-                                <div className="tips">According to SIP-55 , the criteria and process for issuing SBT across SeeDAO have been clarified. SBT is divided into four categories: Identity, Education, Event, and Project, which are used for identity verification for City Hall, Incubator, offline bases, Guild, and all project proposals.</div>
+                                <div className="tit">SBT - {item.category}</div>
                             </TitRhtBox>
                             <ListBox>
                                 {
-                                    detail?.sbt_tokens.map((item:any,index:number)=>(
-                                        <CardBox md={3} key={`sbt_${index}`}>
+                                    item.tokens.map((it:any,ind:number)=>(
+                                        <CardBox md={2} key={`sbt_${item.category}_${ind}`}>
                                             <div className="bgBox">
                                                 <div className="photo">
                                                     <div className="aspect" />
                                                     <div className="content">
                                                         <div className="innerImg">
-                                                            <img src={item.image_uri} alt=""/>
+                                                            <img src={it.image_uri} alt=""/>
                                                         </div>
                                                     </div>
                                                 </div>
@@ -420,7 +681,7 @@ export default function Home(){
                                     ))
                                 }
                             </ListBox>
-                        </>
+                        </div>))
                     }
 
 
@@ -429,4 +690,5 @@ export default function Home(){
             </Col>
         </RowBox>
     </Box>
+    </>
 }

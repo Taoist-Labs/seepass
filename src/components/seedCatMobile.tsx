@@ -1,5 +1,4 @@
 import styled from "styled-components";
-import {useEffect} from "react";
 
 const Box = styled.div`
   display: flex;
@@ -7,6 +6,8 @@ const Box = styled.div`
   justify-content: center;
   height: 100%;
   position: relative;
+  box-shadow: 0 5px 10px rgba(0,0,0,0.1);
+  border-radius: 15px;
     .imgBox{
       width: 70%;
       height: 70%;

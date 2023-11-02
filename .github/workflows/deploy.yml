@@ -19,6 +19,8 @@ jobs:
          node-version: '16.17.0'
 
      - name: Compile
+       env:
+         CI: false
        run: |
          npm install --force;
          npm run build;

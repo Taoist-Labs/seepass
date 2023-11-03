@@ -164,7 +164,7 @@ export default function HomeDetail(){
         }else if(id.indexOf(".seedao") === -1){
             navigate("/404");
         }else{
-            getDetail()
+            getDetail(id)
         }
 
     }, [id]);
@@ -181,7 +181,7 @@ export default function HomeDetail(){
         }
 
     }, []);
-    const getDetail = async() =>{
+    const getDetail = async(id:string) =>{
         setShow(true);
         axios.get(`https://test-seepass-api.seedao.tech/seepass/${id}`)
             .then(response => {

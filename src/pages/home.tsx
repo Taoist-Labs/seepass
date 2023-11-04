@@ -228,6 +228,7 @@ const SocialBox =styled.div`
     margin-right: 10px;
   }
   .spanTit{
+    text-transform: capitalize;
     margin-top: 5px;
   }
   img{

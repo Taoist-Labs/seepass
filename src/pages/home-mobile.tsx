@@ -456,9 +456,9 @@ export default function HomeMobile(){
                 }
 
             </Form.Select>
-            <RhtTop onClick={()=>handleBox()}>
-                <ShareFill />
-            </RhtTop>
+            {/*<RhtTop onClick={()=>handleBox()}>*/}
+            {/*    <ShareFill />*/}
+            {/*</RhtTop>*/}
         </LanBox>
         <BannerBox>
             <InnerBox>

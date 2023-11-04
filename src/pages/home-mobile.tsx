@@ -166,9 +166,7 @@ const LastLine = styled.ul`
   justify-content: center;
   margin: 0 20px;
   .tit{
-    ::first-letter {
-      text-transform: capitalize;
-    }
+    text-transform: capitalize;
     text-align: center;
     font-size: 12px;
     color: #000;

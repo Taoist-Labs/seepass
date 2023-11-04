@@ -445,7 +445,11 @@ export default function HomeMobile(){
     }
 
     const toGo = () =>{
-        navigate(`/detail/${id}`)
+        if(window.location.hostname.indexOf("seedao.id") === -1 ) {
+            navigate(`/detail/${id}`)
+        } else {
+            navigate(`/detail/${window.location.hostname.split(".")[0] +".seedao"}`)
+        }
     }
 
     const handleBox = () =>{

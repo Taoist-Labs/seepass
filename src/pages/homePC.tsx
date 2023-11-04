@@ -195,7 +195,7 @@ export default function HomePC(){
     const [show,setShow] = useState(false);
     const [lan, setLan] = useState('en');
     const [sbt, setSbt] = useState<any[]>([]);
-    const [showShare, setShowShare] = useState(true);
+    const [showShare, setShowShare] = useState(false);
 
     const getLanguages = () => [
         {

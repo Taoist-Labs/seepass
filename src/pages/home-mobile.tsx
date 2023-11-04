@@ -267,7 +267,7 @@ export default function HomeMobile(){
     useEffect(() => {
         if(!id){
             navigate("/404");
-        }else if(id.indexOf(".seedao") === -1){
+        }else if(id.indexOf(".seedao") === -1  && id.indexOf("/detail/")===-1){
             getDetail(id +".seedao")
             // navigate("/404");
         }else{
@@ -456,9 +456,9 @@ export default function HomeMobile(){
                 }
 
             </Form.Select>
-            {/*<RhtTop onClick={()=>handleBox()}>*/}
-            {/*    <ShareFill />*/}
-            {/*</RhtTop>*/}
+            <RhtTop onClick={()=>handleBox()}>
+                <ShareFill />
+            </RhtTop>
         </LanBox>
         <BannerBox>
             <InnerBox>

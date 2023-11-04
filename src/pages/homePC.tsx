@@ -195,7 +195,7 @@ export default function HomePC(){
     const [show,setShow] = useState(false);
     const [lan, setLan] = useState('en');
     const [sbt, setSbt] = useState<any[]>([]);
-    const [showShare, setShowShare] = useState(false);
+    const [showShare, setShowShare] = useState(true);
 
     const getLanguages = () => [
         {
@@ -399,9 +399,9 @@ export default function HomePC(){
                 }
 
             </Form.Select>
-            {/*<RhtTop onClick={()=>handleBox()}>*/}
-            {/*    <ShareFill />*/}
-            {/*</RhtTop>*/}
+            <RhtTop onClick={()=>handleBox()}>
+                <ShareFill />
+            </RhtTop>
         </LanBox>
         <Banner>
             <CenterBox>

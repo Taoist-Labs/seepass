@@ -39,41 +39,64 @@ const InnerBox = styled.div`
   align-items: center;
   justify-content: center;
   margin-top: -20px;
+  width: 100%;
   .imgBox{
     width: 40%;
-    height: 40%;
-    img{
+    display: flex !important;
+    overflow: hidden;
+    border-radius:120px;
+    border:3px solid #000;
+    z-index: 9;
+    .aspect {
+      padding-bottom: 100%;
+      height: 0;
+      flex-grow: 1 !important;
+    }
+    .contentInner {
+      width: 100%;
+      margin-left: -100% !important;
+      max-width: 100% !important;
+      flex-grow: 1 !important;
+      position: relative;
+    }
+    .innerImg{
+      position: absolute;
       width: 100%;
       height: 100%;
-      object-fit: cover;
-      object-position: center;
-      border-radius:120px;
-      border:3px solid #000;
-      
+      left: 0;
+      top: 0;
+      img{
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        object-position: center;
+      }
     }
   }
-  .fst{
-    position: relative;
-    z-index: 10;
-  }
   .snd{
-
     -webkit-filter: grayscale(100%) contrast(200%);
     -moz-filter: grayscale(100%) contrast(200%);
     -ms-filter: grayscale(100%) contrast(200%);
     -o-filter: grayscale(100%) contrast(200%);
     filter: grayscale(100%) contrast(200%);
     filter: gray contrast(200%);
-    margin-left: -30px;
+    margin-left: -15%;
+    z-index: 8;
   }
 `
 export default function SbtCatMobile({sbt}:any){
+
+
+    // upload image: '`/` POST'
+// get image: '`/image/:name` GET'
+// twitter share: '`/share?sns=&titel=&desc=&img=` GET'
+
+
 
     const [item,setItem] = useState<any>();
 
     useEffect(() => {
         if(!sbt) return;
-        console.log(sbt)
         setItem(sbt)
     }, [sbt]);
 
@@ -82,13 +105,23 @@ export default function SbtCatMobile({sbt}:any){
     return <Box>
         <InnerBox>
             {
-                !!item && item[0] &&<div className="imgBox fst">
-                    <img src={item[0]?.image_uri} alt=""/>
+                !!item && item[0] &&<div className="imgBox">
+                        <div className="aspect" />
+                        <div className="contentInner">
+                            <div className="innerImg">
+                                <img src={item[0]?.image_uri} alt=""/>
+                            </div>
+                        </div>
                 </div>
             }
             {
                 !!item && item[1] &&  <div className="imgBox snd">
-                    <img src={item[1]?.image_uri} alt=""/>
+                    <div className="aspect" />
+                    <div className="contentInner">
+                        <div className="innerImg">
+                            <img src={item[1]?.image_uri} alt=""/>
+                        </div>
+                    </div>
                 </div>
             }
         </InnerBox>

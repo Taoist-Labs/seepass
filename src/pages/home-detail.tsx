@@ -159,12 +159,28 @@ export default function HomeDetail(){
 
 
     useEffect(() => {
-        if(!id){
-            navigate("/404");
-        }else if(id.indexOf(".seedao") === -1){
-            navigate("/404");
-        }else{
-            getDetail(id)
+        // if(!id){
+        //     navigate("/404");
+        // }else if(id.indexOf(".seedao") === -1){
+        //     getDetail(id +".seedao")
+        // }else{
+        //     getDetail(id)
+        // }
+
+
+        if(window.location.hostname.indexOf("seedao.id") === -1 ) {
+            if(!id){
+                navigate("/404");
+            }else if(id.indexOf(".seedao") === -1){
+                // navigate("/404");
+                getDetail(id +".seedao")
+
+            }else{
+                console.log(id)
+                getDetail(id)
+            }
+        } else {
+            getDetail(window.location.hostname.split(".")[0] + ".seedao")
         }
 
     }, [id]);
@@ -181,7 +197,9 @@ export default function HomeDetail(){
         }
 
     }, []);
-    const getDetail = async(id:string) =>{
+
+    const getDetail = async(id:any) =>{
+
         setShow(true);
         axios.get(`https://test-seepass-api.seedao.tech/seepass/${id}`)
             .then(response => {

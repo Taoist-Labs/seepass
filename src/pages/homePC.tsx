@@ -12,7 +12,7 @@ import Loading from "./loading";
 import Seed from "../components/seed";
 import Cat from "../components/cat";
 import {Form} from "react-bootstrap";
-import ShareBox from "../components/share";
+// import ShareBox from "../components/share";
 
 const BoxOuter = styled.div`
     display: flex;
@@ -403,9 +403,9 @@ export default function HomePC(){
         {
             show && <Loading />
         }
-        {
-            showShare && <ShareBox detail={detail} CloseShare={CloseShare} />
-        }
+        {/*{*/}
+        {/*    showShare && <ShareBox detail={detail} CloseShare={CloseShare} />*/}
+        {/*}*/}
 
         <LanBox>
             <Form.Select

@@ -5,10 +5,8 @@ import StarR from "../assets/newImages/starR.png";
 import SeedCatMobile from "./seedCatMobile";
 import SbtCatMobile from "./sbtCatMobile";
 import { Spinner,Button } from 'react-bootstrap';
-import html2canvas from "html2canvas";
-import {use} from "i18next";
+import * as htmlToImage from "html-to-image";
 import {FormEvent, useEffect, useState} from "react";
-import  DemoImg from "../assets/demo.jpg";
 import axios from 'axios';
 
 const MaskBox = styled.div`
@@ -250,98 +248,84 @@ const TipBox = styled.div`
 export default function ShareBox({detail,CloseShare}:any){
 
     const uploadURL='https://seepass-share.xiaosongfu.workers.dev'
-    const[current,setCurrent]=useState(1);
-    const [imgUrl,setImgUrl] = useState('');
+    // const[current,setCurrent]=useState(1);
     const [loading,setLoading] = useState(false);
 
+    const [imgCode, setImgCode] = useState("");
 
-    useEffect(() => {
-        setCurrent(0)
-    }, []);
+    const [imgBlob, setImgBlob] = useState<Blob>();
 
     const download = () =>{
         if(!document.getElementById("downloadBox"))return;
-        html2canvas(document.getElementById("downloadBox")!, {
-            allowTaint: false,
-            useCORS: true,
-        }).then( (canvas:HTMLCanvasElement)=> {
-            // toImage
-            const dataImg = new Image()
-            dataImg.src = canvas.toDataURL('image/png')
-            const alink = document.createElement("a");
-            alink.href = dataImg.src;
-            const time = (new Date()).valueOf();
-            alink.download = `TECHX_Mnemonic_${time}.jpg`;
-            alink.click();
 
-            setCurrent(1)
-        });
+        const node = document.getElementById("downloadBox");
+        htmlToImage
+            .toBlob(node!, { cacheBust: true })
+            .then( (data:any) => {
+                data && setImgBlob(data);
+            })
+            .catch( (error:any) =>{
+                console.error("oops, something went wrong!", error);
+            });
     }
 
+    useEffect(() => {
+        if (!imgBlob) return;
 
-    const updateLogo = (e: FormEvent) => {
-        const { files } = e.target as any;
-        const url = window.URL.createObjectURL(files[0]);
         setLoading(true)
+        uploadImage(imgBlob)
+            .then((res) => res.json())
+            .then((res) => {
+                setLoading(false)
+                setImgCode(res.name);
+            });
+    }, [imgBlob]);
 
-        console.log(files)
+
+    useEffect(() => {
+        if(!imgCode)return;
+
+        const shareLink = `${uploadURL}/share?sns=${detail?.sns}&image=${imgCode}`;
+        window.open(
+            `https://twitter.com/intent/tweet?url=${(shareLink)}`,
+            "_blank",
+        );
+        //
+        // setTimeout(()=>{
+        //
+        // },1000)
+
+    }, [imgCode]);
 
 
-        if (files[0]) {
-            const formData = new FormData();
-            formData.append('file', files[0]);
+    const uploadImage = (fileData:any) => {
+       return  fetch(uploadURL, {
+            method: "POST",
+            body: fileData,
+        })
+        // if (files[0]) {
+        //     const formData = new FormData();
+        //     formData.append('file', files[0]);
+        //     fetch(uploadURL, {
+        //         method: 'POST',
+        //         body: formData,
+        //     })
+        //         .then((response) => response.json())
+        //         .then(async (data) => {
+        //             console.log('上传成功:', data.name);
+        //             // await getImage(data.name)
+        //
+        //
+        //         })
+        //         .catch((error) => {
+        //
+        //             console.error('upload error:', error);
+        //         });
+        //
+        // }
 
-
-            fetch(uploadURL, {
-                method: 'POST',
-                body: formData,
-            })
-                .then((response) => response.json())
-                .then((data) => {
-                    // 处理上传成功的响应
-                    console.log('上传成功:', data);
-                })
-                .catch((error) => {
-                    // 处理上传失败的情况
-                    console.error('上传失败:', error);
-                });
-
-            // axios.post(uploadURL, formData)
-            //     .then((response) => {
-            //         console.log('上传成功:', response.data);
-            //     })
-            //     .catch((error) => {
-            //         console.error('上传失败:', error);
-            //     });
-        }
-        // getBase64(url);
     };
 
-
-
-    // const getBase64 = (imgUrl: string) => {
-    //     window.URL = window.URL || window.webkitURL;
-    //     const xhr = new XMLHttpRequest();
-    //     xhr.open('get', imgUrl, true);
-    //     xhr.responseType = 'blob';
-    //     xhr.onload = function () {
-    //         if (this.status === 200) {
-    //             const blob = this.response;
-    //             const oFileReader = new FileReader();
-    //             oFileReader.onloadend = function (e) {
-    //                 const { result } = e.target as any;
-    //                 setImgUrl(result);
-    //                 setLoading(false)
-    //             };
-    //             oFileReader.readAsDataURL(blob);
-    //         }
-    //     };
-    //     xhr.send();
-    // };
-
-    const removeUrl = () => {
-        setImgUrl('');
-    };
 
     return <MaskBox>
 
@@ -350,8 +334,7 @@ export default function ShareBox({detail,CloseShare}:any){
             <CloseBox onClick={()=>CloseShare()}>
                 <X />
             </CloseBox>
-            {
-                current === 0 &&<>
+
                     <Box id="downloadBox">
                         <TopBox>
                             <InnerBox>
@@ -385,55 +368,8 @@ export default function ShareBox({detail,CloseShare}:any){
                         </DescBox>
                     </Box>
                     <BtmInnBox >
-                        <Button onClick={()=>download()}>生成twitter分享图片并下载</Button>
+                        <Button onClick={()=>download()}>分享到twitter</Button>
                     </BtmInnBox>
-                </>
-            }
-
-            {
-                current ===1 && <BoxStep2>
-                    <UploadBox htmlFor="fileUpload" onChange={(e) => updateLogo(e)}>
-                        {
-                            !loading &&
-                            <>
-                                {!imgUrl && (
-                                    <div>
-                                        <input id="fileUpload" type="file" hidden accept=".jpg, .jpeg, .png" />
-                                        <Plus />
-                                    </div>
-                                )}
-                                {!!imgUrl && (
-                                    <ImgBox onClick={() => removeUrl()}>
-                                        <div className="del">
-                                            <X className="iconTop" />
-                                        </div>
-                                        <img src={imgUrl} alt="" />
-                                    </ImgBox>
-                                )}
-                            </>
-                        }
-                        {
-                            loading &&       <div className="loading">
-                                <div>
-                                    <Spinner animation="border" role="status">
-                                        <span className="visually-hidden">Loading...</span>
-                                    </Spinner>
-                                </div>
-                                <span>loading</span>
-                            </div>
-                        }
-
-
-                    </UploadBox>
-
-
-
-                    <TipBox>
-                        <Button>提交到twitter</Button>
-                    </TipBox>
-
-                </BoxStep2>
-            }
 
 
         </BorderBox>

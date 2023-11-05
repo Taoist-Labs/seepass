@@ -307,7 +307,7 @@ export default function HomeMobile(){
     const getDetail = async(id:any) =>{
         setShow(true);
         console.log(id)
-        axios.get(`https://test-seepass-api.seedao.tech/seepass/${id}`)
+        axios.get(`${(window as any).config.BASEURL}/seepass/${id}`)
             .then(response => {
                 const {data} = response;
                 setDetail(data)

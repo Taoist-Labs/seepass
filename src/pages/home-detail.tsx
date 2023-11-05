@@ -29,7 +29,8 @@ const SeedBox = styled.div`
   position: relative;
   z-index: 1;
   .outer{
-    width:300px ;
+    width:80vw ;
+    margin: 0 auto;
     overflow-x: auto;
   }
   ul{

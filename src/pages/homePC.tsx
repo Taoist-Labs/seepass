@@ -12,7 +12,7 @@ import Loading from "./loading";
 import Seed from "../components/seed";
 import Cat from "../components/cat";
 import {Form} from "react-bootstrap";
-import ShareBox from "../components/share";
+// import ShareBox from "../components/share";
 
 const BoxOuter = styled.div`
     display: flex;
@@ -251,7 +251,7 @@ export default function HomePC(){
     }, []);
     const getDetail = async(id:any) =>{
         setShow(true);
-        axios.get(`https://test-seepass-api.seedao.tech/seepass/${id}`)
+        axios.get(`${(window as any).config.BASEURL}/seepass/${id}`)
             .then(response => {
                 const {data} = response;
                 setDetail(data)
@@ -403,9 +403,9 @@ export default function HomePC(){
         {
             show && <Loading />
         }
-        {
-            showShare && <ShareBox detail={detail} CloseShare={CloseShare} />
-        }
+        {/*{*/}
+        {/*    showShare && <ShareBox detail={detail} CloseShare={CloseShare} />*/}
+        {/*}*/}
 
         <LanBox>
             <Form.Select

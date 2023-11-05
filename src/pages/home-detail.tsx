@@ -29,7 +29,8 @@ const SeedBox = styled.div`
   position: relative;
   z-index: 1;
   .outer{
-    width:300px ;
+    width:80vw ;
+    margin: 0 auto;
     overflow-x: auto;
   }
   ul{
@@ -201,7 +202,7 @@ export default function HomeDetail(){
     const getDetail = async(id:any) =>{
 
         setShow(true);
-        axios.get(`https://test-seepass-api.seedao.tech/seepass/${id}`)
+        axios.get(`${(window as any).config.BASEURL}/seepass/${id}`)
             .then(response => {
                 const {data} = response;
                 setDetail(data)

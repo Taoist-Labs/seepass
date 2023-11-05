@@ -13,7 +13,7 @@ import StarR from "../assets/newImages/starR.png";
 import SeedCatMobile from "../components/seedCatMobile";
 import SbtCatMobile from "../components/sbtCatMobile";
 import {Form} from "react-bootstrap";
-import ShareBox from "../components/share";
+// import ShareBox from "../components/share";
 
 
 const BoxOuter = styled.div`
@@ -307,7 +307,7 @@ export default function HomeMobile(){
     const getDetail = async(id:any) =>{
         setShow(true);
         console.log(id)
-        axios.get(`https://test-seepass-api.seedao.tech/seepass/${id}`)
+        axios.get(`${(window as any).config.BASEURL}/seepass/${id}`)
             .then(response => {
                 const {data} = response;
                 setDetail(data)
@@ -463,9 +463,9 @@ export default function HomeMobile(){
         {
             show && <Loading />
         }
-        {
-            showShare && <ShareBox detail={detail} CloseShare={CloseShare} />
-        }
+        {/*{*/}
+        {/*    showShare && <ShareBox detail={detail} CloseShare={CloseShare} />*/}
+        {/*}*/}
 
 
         <LanBox>

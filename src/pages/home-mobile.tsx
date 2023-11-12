@@ -13,6 +13,7 @@ import StarR from "../assets/newImages/starR.png";
 import SeedCatMobile from "../components/seedCatMobile";
 import SbtCatMobile from "../components/sbtCatMobile";
 import {Form} from "react-bootstrap";
+import Publicjs from "../utils/public";
 // import ShareBox from "../components/share";
 
 
@@ -250,8 +251,10 @@ export default function HomeMobile(){
     const [show,setShow] = useState(false);
     const [lan, setLan] = useState('en');
     const [sbt, setSbt] = useState<any[]>([]);
+    const [list,setList] =useState<any[]>([]);
+    const [sbtList,setSbtList] =useState<any[]>([]);
+    const [avatar,setAvatar] =useState('');
     const [showShare, setShowShare] = useState(false);
-
 
     const getLanguages = () => [
         {
@@ -264,16 +267,62 @@ export default function HomeMobile(){
         },
     ];
 
+    useEffect(() => {
+        if(!sbtList?.length)return;
+
+
+        const sbtFor = sbtList.filter((item:any)=>item.name && item.image_uri);
+
+        const groupedData = sbtFor.reduce((result:any, item:any) => {
+            const key = item?.metadata?.properties?.category? item?.metadata?.properties?.category:"others";
+            const group = result?.find((group:any) => group.category === key);
+
+            if (group) {
+                group.tokens.push(item);
+            } else {
+                result.push({ category: key, tokens: [item] });
+            }
+            return result;
+        }, []);
+        setSbt(groupedData)
+    }, [sbtList]);
+
+    const getAvatar = async () =>{
+        let avarUrl= await Publicjs.getImage(detail?.avatar);
+        setAvatar(avarUrl);
+    }
+
+
+    useEffect(() => {
+        if(!detail)return;
+        detail?.seed?.map( async (seedItem:any)=>{
+
+            let url= await Publicjs.getImage(seedItem.image_uri);
+            setList((list)=>[...list,{...seedItem,url}])
+        });
+
+        getAvatar()
+
+        let sbtArr = detail.sbt;
+        sbtArr?.map( async (seedItem:any)=>{
+            let url= await Publicjs.getImage(seedItem.image_uri);
+            setSbtList((list)=>[...list,{...seedItem,url}])
+        });
+
+    }, [detail]);
+
+
 
     useEffect(() => {
         // if(!id){
         //     navigate("/404");
-        // }else if(id.indexOf(".seedao") === -1  && id.indexOf("/detail/")===-1){
+        // }else if(id.indexOf(".seedao") === -1){
         //     getDetail(id +".seedao")
         //     // navigate("/404");
         // }else{
         //     getDetail(id)
         // }
+
 
         if(window.location.hostname.indexOf("seedao.id") === -1 ) {
             if(!id){
@@ -286,10 +335,9 @@ export default function HomeMobile(){
                 console.log(id)
                 getDetail(id)
             }
-          } else {
-              getDetail(window.location.hostname.split(".")[0] + ".seedao")
-          }
-
+        } else {
+            getDetail(window.location.hostname.split(".")[0] + ".seedao")
+        }
     }, [id]);
 
 
@@ -306,28 +354,10 @@ export default function HomeMobile(){
     }, []);
     const getDetail = async(id:any) =>{
         setShow(true);
-        console.log(id)
         axios.get(`${(window as any).config.BASEURL}/seepass/${id}`)
             .then(response => {
                 const {data} = response;
                 setDetail(data)
-
-                let sbtArr = data.sbt;
-
-                const sbtFor = sbtArr.filter((item:any)=>item.name && item.image_uri);
-                const groupedData = sbtFor.reduce((result:any, item:any) => {
-                    const key = item?.metadata?.properties?.category? item?.metadata?.properties?.category:"others";
-                    const group = result?.find((group:any) => group.category === key);
-                    if (group) {
-                        group.tokens.push(item);
-                    } else {
-                        result.push({ category: key, tokens: [item] });
-                    }
-                    return result;
-                }, []);
-                setSbt(groupedData)
-
-
             })
             .catch(error => {
                 console.error(error);
@@ -353,11 +383,11 @@ export default function HomeMobile(){
                 return <a href={val} target="_blank">
                     <img src={MirrorImg} alt="" />
                 </a>;
+            case "wechat":
+            // return <Wechat color="#25b423" />;
             case "discord":
                 // return <Discord color="#4757e8" />;
-            case "wechat":
-                // return <Wechat color="#25b423" />;
-                return "";
+                return null
         }
     };
 

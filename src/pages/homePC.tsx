@@ -12,6 +12,7 @@ import Loading from "./loading";
 import Seed from "../components/seed";
 import Cat from "../components/cat";
 import {Form} from "react-bootstrap";
+import Publicjs from "../utils/public";
 // import ShareBox from "../components/share";
 
 const BoxOuter = styled.div`
@@ -196,6 +197,9 @@ export default function HomePC(){
     const [show,setShow] = useState(false);
     const [lan, setLan] = useState('en');
     const [sbt, setSbt] = useState<any[]>([]);
+    const [list,setList] =useState<any[]>([]);
+    const [sbtList,setSbtList] =useState<any[]>([]);
+    const [avatar,setAvatar] =useState('');
     const [showShare, setShowShare] = useState(false);
 
     const getLanguages = () => [
@@ -208,6 +212,51 @@ export default function HomePC(){
             label: '中文',
         },
     ];
+
+    useEffect(() => {
+        if(!sbtList?.length)return;
+
+
+        const sbtFor = sbtList.filter((item:any)=>item.name && item.image_uri);
+
+        const groupedData = sbtFor.reduce((result:any, item:any) => {
+            const key = item?.metadata?.properties?.category? item?.metadata?.properties?.category:"others";
+            const group = result?.find((group:any) => group.category === key);
+
+            if (group) {
+                group.tokens.push(item);
+            } else {
+                result.push({ category: key, tokens: [item] });
+            }
+            return result;
+        }, []);
+        setSbt(groupedData)
+    }, [sbtList]);
+
+    const getAvatar = async () =>{
+        let avarUrl= await Publicjs.getImage(detail?.avatar);
+        setAvatar(avarUrl);
+    }
+
+
+    useEffect(() => {
+        if(!detail)return;
+        detail?.seed?.map( async (seedItem:any)=>{
+
+            let url= await Publicjs.getImage(seedItem.image_uri);
+            setList((list)=>[...list,{...seedItem,url}])
+        });
+
+        getAvatar()
+
+        let sbtArr = detail.sbt;
+        sbtArr?.map( async (seedItem:any)=>{
+            let url= await Publicjs.getImage(seedItem.image_uri);
+            setSbtList((list)=>[...list,{...seedItem,url}])
+        });
+
+    }, [detail]);
+
 
 
     useEffect(() => {
@@ -251,30 +300,11 @@ export default function HomePC(){
     }, []);
     const getDetail = async(id:any) =>{
         setShow(true);
+        // axios.get(`${(window as any).config.BASEURL}/seepass/${id}`)
         axios.get(`${(window as any).config.BASEURL}/seepass/${id}`)
             .then(response => {
                 const {data} = response;
                 setDetail(data)
-
-                let sbtArr = data.sbt;
-
-                const sbtFor = sbtArr.filter((item:any)=>item.name && item.image_uri);
-
-
-                const groupedData = sbtFor.reduce((result:any, item:any) => {
-                    const key = item?.metadata?.properties?.category? item?.metadata?.properties?.category:"others";
-                    const group = result?.find((group:any) => group.category === key);
-
-                    if (group) {
-                        group.tokens.push(item);
-                    } else {
-                        result.push({ category: key, tokens: [item] });
-                    }
-                    return result;
-                }, []);
-                setSbt(groupedData)
-
-
             })
             .catch(error => {
                 console.error(error);
@@ -424,10 +454,10 @@ export default function HomePC(){
             <CenterBox>
                 <AvatarBox>
                     {
-                        !!detail?.avatar &&<img src={detail?.avatar} alt=""/>
+                        !!avatar &&<img src={avatar} alt=""/>
                     }
                     {
-                        !detail?.avatar &&<PersonFill  className="iconBox"/>
+                        !avatar &&<PersonFill  className="iconBox"/>
                     }
                 </AvatarBox>
 
@@ -458,7 +488,7 @@ export default function HomePC(){
             </ProgressOuter>
 
             <SbtOuter>
-                <Seed  current="seed" item={detail?.seed} />
+                <Seed  current="seed" item={list} />
 
             </SbtOuter>
 

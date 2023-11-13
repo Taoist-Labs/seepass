@@ -68,13 +68,13 @@ export default function SbtCat({item}:any){
     return <Box>
         <InnerBox>
             {
-                item?.tokens[0] &&<div className="imgBox fst">
-                    <img src={item?.tokens[0]?.image_uri} alt=""/>
+                !!item && item?.tokens[0] &&<div className="imgBox fst">
+                    <img src={item?.tokens[0]?.url} alt=""/>
                 </div>
             }
             {
                 item?.tokens[1] &&  <div className="imgBox snd">
-                    <img src={item?.tokens[1]?.image_uri} alt=""/>
+                    <img src={item?.tokens[1]?.url} alt=""/>
                 </div>
             }
         </InnerBox>

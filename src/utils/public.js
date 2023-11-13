@@ -14,7 +14,6 @@ async function agumentedIpfsGet(hash) {
     const promises = IPFS_BASES.map(async (ipfsBase) =>{
         try{
             let rt = await axios.get(`${ipfsBase}/${hash}`);
-            console.log(rt)
             if(rt.status === 200){
                 return `${ipfsBase}/${hash}`;
             }else{
@@ -29,10 +28,8 @@ async function agumentedIpfsGet(hash) {
 
     try{
         const result = await Promise.any(promises);
-        console.error(result)
         return result;
     }catch (e) {
-        console.log(e)
         return Promise.reject(e)
     }
 
@@ -47,6 +44,7 @@ const getImage = async(img) => {
     }else{
         try{
             let imgAA = await agumentedIpfsGet(img);
+            console.log(imgAA)
             return imgAA
         }catch (e) {
             return Promise.reject(e);

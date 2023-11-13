@@ -553,10 +553,10 @@ export default function HomeMobile(){
                 </div>
                 <ul>
                     <li onClick={()=>toGo()}>
-                        <SeedCatMobile  seed={detail?.seed} />
+                        <SeedCatMobile  seed={list} />
                     </li>
                     <li onClick={()=>toGo()}>
-                        <SbtCatMobile sbt={detail?.sbt} />
+                        <SbtCatMobile sbt={sbt} />
                     </li>
                 </ul>
             </MidLine>

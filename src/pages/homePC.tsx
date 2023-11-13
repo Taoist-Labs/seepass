@@ -238,7 +238,6 @@ export default function HomePC(){
         setAvatar(avarUrl);
     }
 
-
     useEffect(() => {
         if(!detail)return;
         detail?.seed?.map( async (seedItem:any)=>{
@@ -253,6 +252,7 @@ export default function HomePC(){
         sbtArr?.map( async (seedItem:any)=>{
             let url= await Publicjs.getImage(seedItem.image_uri);
             setSbtList((list)=>[...list,{...seedItem,url}])
+
         });
 
     }, [detail]);
@@ -471,7 +471,7 @@ export default function HomePC(){
         </Banner>
         <MainBox>
             <Roles roles={detail?.roles} switchRoles={switchRoles}/>
-            <Cat sbt={sbt} seed={detail?.seed} />
+            <Cat sbt={sbt} seed={list} />
             <ProgressOuter>
                 <FstLine>
                     <LevelBox>

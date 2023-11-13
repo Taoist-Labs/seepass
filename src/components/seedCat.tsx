@@ -79,23 +79,25 @@ const  LftTop = styled.div`
 
 export default function SeedCat({seed}:any){
 
+
     return <Box>
+
         {
             !!seed && <div className="imgBox">
-                <img src={seed[0]?.image_uri} alt=""/>
+                <img src={seed[0]?.url} alt=""/>
             </div>
         }
 
         <LftTop>
             {
-                !!seed &&seed[1] && seed[1]?.image_uri &&<div className="fst">
-                    <img src={seed[1]?.image_uri} alt=""/>
+                !!seed &&seed[1] && seed[1]?.url &&<div className="fst">
+                    <img src={seed[1]?.url} alt=""/>
                 </div>
             }
 
             {
-                !!seed &&seed[2]?.image_uri &&<div className="snd">
-                    <img src={seed[2]?.image_uri} alt=""/>
+                !!seed &&seed[2]?.url &&<div className="snd">
+                    <img src={seed[2]?.url} alt=""/>
                 </div>
             }
 
@@ -106,5 +108,6 @@ export default function SeedCat({seed}:any){
             <div className="seed">SEED</div>
         </div>
         <div className="num">{seed?.length}</div>
+
     </Box>
 }

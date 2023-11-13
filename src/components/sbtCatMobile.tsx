@@ -91,8 +91,8 @@ export default function SbtCatMobile({sbt}:any){
     const [item,setItem] = useState<any>();
 
     useEffect(() => {
-        if(!sbt) return;
-        setItem(sbt[0].tokens)
+        if(!sbt ||!sbt[0] || !sbt[0].tokens.length) return;
+        setItem(sbt[0]?.tokens)
     }, [sbt]);
 
     return <Box>

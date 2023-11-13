@@ -517,10 +517,10 @@ export default function HomeMobile(){
                     <div className="lft" />
                     <div className="rht" />
                     {
-                        !!detail?.avatar &&<img src={detail?.avatar} alt=""/>
+                        !!avatar &&<img src={avatar} alt=""/>
                     }
                     {
-                        !detail?.avatar &&<PersonFill  className="iconBox"/>
+                        !avatar &&<PersonFill  className="iconBox"/>
                     }
                 </AvatarBox>
                 <TitleBox>{detail?.sns}</TitleBox>

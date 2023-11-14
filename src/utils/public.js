@@ -2,10 +2,11 @@ import axios from 'axios';
 
 const IPFS_BASES = [
     'https://gateway.pinata.cloud/ipfs',
-    'https://10.via0.com/ipfs',
+    'https://gateway.ipfs.io/ipfs',
     'https://ipfs.io/ipfs',
-    'https://ipfs.leiyun.org/ipfs',
-    'https://cloudflare-ipfs.com/ipfs',
+    'https://cf-ipfs.com/ipfs',
+    'https://dweb.link/ipfs',
+    'https://ipfs.eth.aragon.network/ipfs',
 ];
 
 
@@ -39,12 +40,15 @@ async function agumentedIpfsGet(hash) {
 
 const getImage = async(img) => {
     if(!img) return;
-    if(img.indexOf("://")>-1){
+    if(img.indexOf("http://")>-1 || img.indexOf("https://")>-1){
         return img
     }else{
+        let str =img;
+        if(img.indexOf("ipfs://") >-1 ){
+            str = img.split("ipfs://")[1];
+        }
         try{
-            let imgAA = await agumentedIpfsGet(img);
-            console.log(imgAA)
+            let imgAA = await agumentedIpfsGet(str);
             return imgAA
         }catch (e) {
             return Promise.reject(e);

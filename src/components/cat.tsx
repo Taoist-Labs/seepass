@@ -85,7 +85,7 @@ export default function Cat(props:Iprops){
                 }
 
                 {
-                    sbt.map((item:any,index:string)=>(<SwiperSlide className="li" key={index}><SbtCat item={item}/></SwiperSlide>))
+                    sbt?.map((item:any,index:string)=>(<SwiperSlide className="li" key={index}><SbtCat item={item}/></SwiperSlide>))
                 }
 
             </Swiper>

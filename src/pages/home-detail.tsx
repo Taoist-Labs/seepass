@@ -5,6 +5,7 @@ import {useTranslation} from "react-i18next";
 import {useEffect, useState} from "react";
 import axios from "axios";
 import Loading from "./loading";
+import Publicjs from "../utils/public";
 
 const BoxOuter = styled.div`
     display: flex;
@@ -140,7 +141,8 @@ export default function HomeDetail(){
     }
 
 
-
+    const [list,setList] =useState<any[]>([]);
+    const [sbtList,setSbtList] =useState<any[]>([]);
     const { i18n,t } = useTranslation();
     const [ detail,setDetail] = useState<any>();
     const [show,setShow] = useState(false);
@@ -157,6 +159,46 @@ export default function HomeDetail(){
             label: '中文',
         },
     ];
+
+    useEffect(() => {
+        if(!sbtList?.length)return;
+
+
+        const sbtFor = sbtList.filter((item:any)=>item.name && item.image_uri);
+
+        const groupedData = sbtFor.reduce((result:any, item:any) => {
+            const key = item?.metadata?.properties?.category? item?.metadata?.properties?.category:"others";
+            const group = result?.find((group:any) => group.category === key);
+
+            if (group) {
+                group.tokens.push(item);
+            } else {
+                result.push({ category: key, tokens: [item] });
+            }
+            return result;
+        }, []);
+        setSbt(groupedData)
+    }, [sbtList]);
+
+
+
+
+    useEffect(() => {
+        if(!detail)return;
+        detail?.seed?.map( async (seedItem:any)=>{
+
+            let url= await Publicjs.getImage(seedItem.image_uri);
+            setList((list)=>[...list,{...seedItem,url}])
+        });
+
+
+        let sbtArr = detail.sbt;
+        sbtArr?.map( async (seedItem:any)=>{
+            let url= await Publicjs.getImage(seedItem.image_uri);
+            setSbtList((list)=>[...list,{...seedItem,url}])
+        });
+
+    }, [detail]);
 
 
     useEffect(() => {
@@ -202,26 +244,10 @@ export default function HomeDetail(){
     const getDetail = async(id:any) =>{
 
         setShow(true);
-        axios.get(`${(window as any).config.BASEURL}/seepass/${id}`)
+        axios.get(`${Publicjs.getBaseUrl()}/seepass/${id}`)
             .then(response => {
                 const {data} = response;
                 setDetail(data)
-
-                let sbtArr = data.sbt;
-                const sbtFor = sbtArr.filter((item:any)=>item.name && item.image_uri);
-
-                const groupedData = sbtFor.reduce((result:any, item:any) => {
-                    const key = item?.metadata?.properties?.category? item?.metadata?.properties?.category:"others";
-                    const group = result?.find((group:any) => group.category === key);
-                    if (group) {
-                        group.tokens.push(item);
-                    } else {
-                        result.push({ category: key, tokens: [item] });
-                    }
-                    return result;
-                }, []);
-                setSbt(groupedData)
-
 
             })
             .catch(error => {
@@ -261,9 +287,9 @@ export default function HomeDetail(){
                     <ul>
 
                         {
-                            detail?.seed?.map((item:any,index:number)=>(
+                            list?.map((item:any,index:number)=>(
                                 <li key={`seed_${index}`}>
-                                    <img src={item.image_uri} alt=""/>
+                                    <img src={item.url} alt=""/>
                                 </li>
                             ))
                         }
@@ -286,7 +312,7 @@ export default function HomeDetail(){
                             {
                                 item.tokens.map((it:any,ind:number) =>(<li key={`sbt_${item.category}_${ind}`}>
                                     <div className="imgBox">
-                                        <img src={it.image_uri} alt=""/>
+                                        <img src={it.url} alt=""/>
                                     </div>
                                     <div className="title">{it?.metadata?.name}</div>
                                     <div className="num">ID: {it?.token_id}</div>

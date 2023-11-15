@@ -126,7 +126,7 @@ export default function SBT(props:Iprops){
                         {
                             item.tokens?.map((it:any,ind:number) =>(<SwiperSlide className="li" key={`sbtInner_${ind}`}>
                                 <div className="imgBox">
-                                    <img src={it.image_uri} alt=""/>
+                                    <img src={it.url} alt=""/>
                                 </div>
                                 <div className="title">{it?.metadata?.name}</div>
                                 <div className="num">ID: {it?.token_id}</div>

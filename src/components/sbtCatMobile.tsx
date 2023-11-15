@@ -87,20 +87,13 @@ const InnerBox = styled.div`
 export default function SbtCatMobile({sbt}:any){
 
 
-    // upload image: '`/` POST'
-// get image: '`/image/:name` GET'
-// twitter share: '`/share?sns=&titel=&desc=&img=` GET'
-
-
 
     const [item,setItem] = useState<any>();
 
     useEffect(() => {
-        if(!sbt) return;
-        setItem(sbt)
+        if(!sbt ||!sbt[0] || !sbt[0].tokens.length) return;
+        setItem(sbt[0]?.tokens)
     }, [sbt]);
-
-
 
     return <Box>
         <InnerBox>
@@ -109,7 +102,7 @@ export default function SbtCatMobile({sbt}:any){
                         <div className="aspect" />
                         <div className="contentInner">
                             <div className="innerImg">
-                                <img src={item[0]?.image_uri} alt=""/>
+                                <img src={item[0]?.url} alt=""/>
                             </div>
                         </div>
                 </div>
@@ -119,7 +112,7 @@ export default function SbtCatMobile({sbt}:any){
                     <div className="aspect" />
                     <div className="contentInner">
                         <div className="innerImg">
-                            <img src={item[1]?.image_uri} alt=""/>
+                            <img src={item[1]?.url} alt=""/>
                         </div>
                     </div>
                 </div>

@@ -3,8 +3,6 @@ name: Deploy to another repo
 on:
   push:
     branches: [ main ]
-  pull_request:
-    branches: [ main ]
 
 jobs:
   build:

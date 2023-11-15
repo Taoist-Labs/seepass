@@ -300,8 +300,9 @@ export default function HomePC(){
     }, []);
     const getDetail = async(id:any) =>{
         setShow(true);
+
         // axios.get(`${(window as any).config.BASEURL}/seepass/${id}`)
-        axios.get(`${(window as any).config.BASEURL}/seepass/${id}`)
+        axios.get(`${Publicjs.getBaseUrl()}/seepass/${id}`)
             .then(response => {
                 const {data} = response;
                 setDetail(data)

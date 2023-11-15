@@ -57,6 +57,11 @@ const getImage = async(img) => {
     }
 }
 
+const getBaseUrl = () =>{
+   return (process.env.NODE_ENV === 'development' || window.location.href.indexOf("dev-sns.seedao.tech") > -1)?window.config.development.BASEURL :window.config.BASEURL;
+}
+
 export default {
-    getImage
+    getImage,
+    getBaseUrl
 }

@@ -364,6 +364,9 @@ export default function HomePC(){
             case "NODE_S4":
                 str = t("roles.NODE_S4");
                 break;
+            case "NODE_S5":
+                str = t("roles.NODE_S5");
+                break;
             case "CITYHALL_S1":
                 str = t("roles.CITYHALL_S1");
                 break;
@@ -375,6 +378,9 @@ export default function HomePC(){
                 break;
             case "CITYHALL_S4":
                 str = t("roles.CITYHALL_S4");
+                break;
+            case "CITYHALL_S5":
+                str = t("roles.CITYHALL_S5");
                 break;
             case "CONTRIBUTOR_L1":
                 str = t("roles.CONTRIBUTOR_L1");

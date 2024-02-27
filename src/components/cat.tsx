@@ -81,7 +81,7 @@ export default function Cat(props:Iprops){
                 modules={[Grid, Pagination,Navigation]}
             >
                 {
-                    seed?.length &&<SwiperSlide className="li"><SeedCat seed={seed} /></SwiperSlide>
+                    !!seed?.length &&<SwiperSlide className="li"><SeedCat seed={seed} /></SwiperSlide>
                 }
 
                 {
